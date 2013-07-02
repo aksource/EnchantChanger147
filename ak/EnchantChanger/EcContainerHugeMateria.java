@@ -1,10 +1,6 @@
 package ak.EnchantChanger;
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,7 +9,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class EcContainerHugeMateria extends Container {
@@ -25,11 +22,9 @@ public class EcContainerHugeMateria extends Container {
 	public static int SourceSlotNum = 9;
 	protected EcTileEntityHugeMateria tileEntity;
 	protected InventoryPlayer InvPlayer;
-	protected int materiamax = EnchantChanger.materiamax ;
 	private ArrayList<Integer> ItemEnchList = new ArrayList<Integer>();
 	private ArrayList<Integer> ItemEnchLvList = new ArrayList<Integer>();
 	private ArrayList<Integer> MateriaEnchList = new ArrayList<Integer>();
-	private int maxlv = EnchantChanger.MaxLv;
 	private boolean Debug = EnchantChanger.Debug;
 //	private Minecraft mc = EnchantChanger.mc;
 	private boolean materiadecLv = EnchantChanger.DecMateriaLv;

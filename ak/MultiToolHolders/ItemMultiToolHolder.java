@@ -266,7 +266,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
         par0Tessellator.draw();
     }
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-		if (par3Entity instanceof EntityPlayer && ((EntityPlayer) par3Entity).getCurrentEquippedItem() == par1ItemStack)
+		if (par3Entity instanceof EntityPlayer && par5)
 		{
 			EntityPlayer entityPlayer = (EntityPlayer) par3Entity;
 			Side side = FMLCommonHandler.instance().getEffectiveSide();
@@ -275,15 +275,15 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 				this.tools = this.getData(par1ItemStack, par2World);
 				this.tools.onUpdate(par2World, entityPlayer);
 				this.tools.onInventoryChanged();
-				if (par1ItemStack.hasTagCompound())
-		        {
-					par1ItemStack.getTagCompound().removeTag("ench");
-		        }
-				if(this.tools != null && this.tools.getStackInSlot(SlotNum) != null)
-				{
-					this.tools.getStackInSlot(SlotNum).getItem().onUpdate(this.tools.getStackInSlot(SlotNum), par2World, par3Entity, par4, par5);
-					this.setEnchantments(par1ItemStack, this.tools.getStackInSlot(SlotNum));
-				}
+			}
+			if (par1ItemStack.hasTagCompound())
+	        {
+				par1ItemStack.getTagCompound().removeTag("ench");
+	        }
+			if(this.tools != null && this.tools.getStackInSlot(SlotNum) != null)
+			{
+				this.tools.getStackInSlot(SlotNum).getItem().onUpdate(this.tools.getStackInSlot(SlotNum), par2World, par3Entity, par4, par5);
+				this.setEnchantments(par1ItemStack, this.tools.getStackInSlot(SlotNum));
 			}
 			if(entityPlayer.openContainer == null || !(entityPlayer.openContainer instanceof ContainerToolHolder))
 			{
@@ -309,7 +309,7 @@ public class ItemMultiToolHolder extends Item implements IItemRenderer
 				if(this.OpenKeydown)
 				{
 
-					int GuiID = (this.Slotsize == 3)? MultiToolHolders.guiIdHolder3:(this.Slotsize == 5)? MultiToolHolders.guiIdHolder5:MultiToolHolders.guiIdHolder9;
+					int GuiID = (this.Slotsize == 3)? MultiToolHolders.guiIdHolder3:(this.Slotsize == 5)? MultiToolHolders.guiIdHolder5:(this.Slotsize == 7)? MultiToolHolders.guiIdHolder7:MultiToolHolders.guiIdHolder9;
 					entityPlayer.openGui(MultiToolHolders.instance, GuiID, par2World, 0, 0, 0);
 				}
 			}

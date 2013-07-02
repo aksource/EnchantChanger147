@@ -1,11 +1,9 @@
 package ak.EnchantChanger;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentThorns;
@@ -18,19 +16,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import ak.EnchantChanger.Client.EcModelCloudSwordCore;
-import ak.EnchantChanger.Client.EcModelCloudSwordCore2;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -40,7 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 
 
 
-public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
+public class EcItemCloudSwordCore extends EcItemSword
 {
     public static boolean ActiveMode=false;
     public static Entity Attackentity = null;
@@ -53,32 +47,7 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
     public EcItemCloudSwordCore(int par1)
     {
         super(par1, EnumToolMaterial.EMERALD);
-        this.setMaxDamage(-1);
     }
-
-    @Override
-   	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-   		return type == ItemRenderType.EQUIPPED;
-   	}
-   	@Override
-   	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-   		return false;
-   	}
-
-   	@Override
-   	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-   	{
-   		EcModelCloudSwordCore CCModel = new EcModelCloudSwordCore();
-   		EcModelCloudSwordCore2 CCModel2 = new EcModelCloudSwordCore2();
-   		if(!this.ActiveMode)
-   		{
-   			CCModel.renderItem(item, (EntityLiving)data[1]);
-   		}
-   		else
-   		{
-   			CCModel2.renderItem(item, (EntityLiving)data[1]);
-   		}
-   	}
 
     public int getDamageVsEntity(Entity par1Entity)
     {
@@ -112,7 +81,6 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
     		}
     		else
     		{
-    			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
     			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
     			return par1ItemStack;
     		}
@@ -146,11 +114,6 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
     	return false;
     }
 
-    public Item setNoRepair()
-    {
-        canRepair = false;
-        return this;
-    }
 	public boolean canUnion2(EntityPlayer player)
 	{
 		int Index = 0;
@@ -168,10 +131,6 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 		}
 		return Index >= 5;
 	}
-//    public boolean checkmode(int mode)
-//	{
-//		return mode != 0;
-//	}
 	public void attackTargetEntityWithInventoryItem(Entity par1Entity, EntityPlayer player)
 	{
 		ItemStack sword;
@@ -183,11 +142,11 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 			sword = player.inventory.getStackInSlot(i);
 			if(sword != null && sword.getItem() instanceof ItemSword && !(sword.getItem() instanceof EcItemSword))
 			{
-				this.attackTargetEntityWithTheItem(par1Entity, player, sword);
+				this.attackTargetEntityWithTheItem(par1Entity, player, sword, i);
 			}
 		}
 	}
-	public void attackTargetEntityWithTheItem(Entity par1Entity, EntityPlayer player,ItemStack stack)
+	public void attackTargetEntityWithTheItem(Entity par1Entity, EntityPlayer player,ItemStack stack, int Slot)
 	{
 		if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(player, par1Entity)))
 		{
@@ -290,7 +249,7 @@ public class EcItemCloudSwordCore extends EcItemSword implements IItemRenderer
 						if (var9.stackSize <= 0)
 						{
 					    	MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, stack));
-							var9 = null;
+							player.inventory.setInventorySlotContents(Slot, null);
 						}
 					}
 

@@ -17,7 +17,7 @@ public class EcSlotItemToEnchant extends Slot
     }
 	public boolean isItemValid(ItemStack par1ItemStack)
     {
-        return true;
+        return !(par1ItemStack.getItem() instanceof EcItemMateria);
     }
 	public int getSlotStackLimit()
     {

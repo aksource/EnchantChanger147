@@ -14,7 +14,7 @@ import cpw.mods.fml.common.TickType;
 
 public class EcKeyHandler extends KeyHandler
 {
-	public static boolean MagicKeyDown=false;
+	public static boolean MagicKeyDown = false;
 	public EcKeyHandler(KeyBinding[] keyBindings, boolean[] repeatings)
 	{
 		super(keyBindings, repeatings);
@@ -31,12 +31,10 @@ public class EcKeyHandler extends KeyHandler
 	{
 		if (types.equals(EnumSet.of(TickType.CLIENT)))
 		{
-			/**
 			if(kb == ClientProxy.MagicKey)
 			{
 				this.MagicKeyDown = true;
 			}
-			*/
 		}
 	}
 	@Override
@@ -44,12 +42,10 @@ public class EcKeyHandler extends KeyHandler
 	{
 		if (types.equals(EnumSet.of(TickType.CLIENT)))
 		{
-			/**
 			if(kb == ClientProxy.MagicKey)
 			{
 				this.MagicKeyDown = false;
 			}
-			*/
 		}
 	}
 

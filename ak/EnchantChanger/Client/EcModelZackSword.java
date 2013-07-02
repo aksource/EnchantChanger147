@@ -17,49 +17,63 @@ public class EcModelZackSword extends ModelBase
 {
   //fields
     ModelRenderer Sword;
-    //private Minecraft MC = FMLClientHandler.instance().getClient();
 
-    public EcModelZackSword()
-    {
-        textureWidth = 64;
-        textureHeight = 32;
-        setTextureOffset("Sword.edge1", 20, 0);
-        setTextureOffset("Sword.edge2", 20, 2);
-        setTextureOffset("Sword.edge3", 20, 5);
-        setTextureOffset("Sword.edge4", 20, 9);
-        setTextureOffset("Sword.edge5", 20, 14);
-        setTextureOffset("Sword.edge6", 20, 20);
-        setTextureOffset("Sword.edge7", 20, 20);
-        setTextureOffset("Sword.edge8", 20, 20);
-        setTextureOffset("Sword.tsuba", 8, 14);
-        setTextureOffset("Sword.tsuka", 12, 22);
+	public EcModelZackSword()
+	{
+		textureWidth = 128;
+		textureHeight = 128;
+		setTextureOffset("Sword.Shape1", 0, 0);
+		setTextureOffset("Sword.Shape2", 36, 0);
+		setTextureOffset("Sword.Shape3", 36, 4);
+		setTextureOffset("Sword.Shape4", 36, 0);
+		setTextureOffset("Sword.Shape5", 36, 9);
+		setTextureOffset("Sword.Shape6", 0, 49);
+		setTextureOffset("Sword.Shape7", 0, 51);
+		setTextureOffset("Sword.Shape8", 0, 53);
+		setTextureOffset("Sword.Shape9", 0, 55);
+		setTextureOffset("Sword.Shape10", 0, 57);
+		setTextureOffset("Sword.Shape11", 0, 59);
+		setTextureOffset("Sword.Shape12", 0, 61);
+		setTextureOffset("Sword.Shape13", 0, 63);
+		setTextureOffset("Sword.Shape14", 0, 65);
+		setTextureOffset("Sword.Shape15", 0, 67);
+		setTextureOffset("Sword.Shape16", 0, 69);
+		setTextureOffset("Sword.Shape17", 0, 71);
+		setTextureOffset("Sword.Shape18", 0, 73);
+		setTextureOffset("Sword.Shape19", 0, 75);
+		setTextureOffset("Sword.Shape20", 0, 77);
+		setTextureOffset("Sword.Shape21", 0, 79);
+		setTextureOffset("Sword.Shape22", 36, 30);
+		setTextureOffset("Sword.Shape23", 36, 30);
 
-        Sword = new ModelRenderer(this, "Sword");
-        Sword.setRotationPoint(6F, 3F, -4F);
-        setRotation(Sword, 0F, 0F, 0F);
-        Sword.mirror = true;
-          Sword.addBox("edge1", 0F, 23F, 0F, 1, 1, 1);
-          Sword.addBox("edge2", 0F, 22F, 0F, 1, 1, 2);
-          Sword.addBox("edge3", 0F, 21F, 0F, 1, 1, 3);
-          Sword.addBox("edge4", 0F, 20F, 0F, 1, 1, 4);
-          Sword.addBox("edge5", 0F, 19F, 0F, 1, 1, 5);
-          Sword.addBox("edge6", 0F, 13F, 0F, 1, 6, 6);
-          Sword.addBox("edge7", 0F, 7F, 0F, 1, 6, 6);
-          Sword.addBox("edge8", 0F, 1F, 0F, 1, 6, 6);
-          Sword.addBox("tsuba", -0.5F, 0F, -0.5F, 2, 1, 7);
-          Sword.addBox("tsuka", 0F, -6F, 2.5F, 1, 6, 1);
-      }
-/**
-  public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-  {
-	  Minecraft mc = mod_EnchantChanger.mc;
-	  GL11.glPushMatrix();
-      GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/mod_EnchantChanger/SephirothSword.png"));
-	  super.render(entity, f, f1, f2, f3, f4, f5);
-	  setRotationAngles(f, f1, f2, f3, f4, f5);
-      Sword.render(f5);
-  }
-*/
+		Sword = new ModelRenderer(this, "Sword");
+		Sword.setRotationPoint(0F, 0F, 0F);
+		setRotation(Sword, 0F, 0F, 0F);
+		Sword.mirror = false;
+		Sword.addBox("Shape1", -8F, 1F, 0F, 17, 48, 1);
+		Sword.addBox("Shape2", -9F, 0F, -1F, 19, 1, 3);
+		Sword.addBox("Shape3", -8.5F, -3F, -0.5F, 18, 3, 2);
+		Sword.addBox("Shape4", -9F, -4F, -1F, 19, 1, 3);
+		Sword.addBox("Shape5", -0.5F, -22F, -0.5F, 2, 18, 2);
+		Sword.addBox("Shape6", -8F, 49F, 0F, 16, 1, 1);
+		Sword.addBox("Shape7", -8F, 50F, 0F, 15, 1, 1);
+		Sword.addBox("Shape8", -8F, 51F, 0F, 14, 1, 1);
+		Sword.addBox("Shape9", -8F, 52F, 0F, 13, 1, 1);
+		Sword.addBox("Shape10", -8F, 53F, 0F, 12, 1, 1);
+		Sword.addBox("Shape11", -8F, 54F, 0F, 11, 1, 1);
+		Sword.addBox("Shape12", -8F, 55F, 0F, 10, 1, 1);
+		Sword.addBox("Shape13", -8F, 56F, 0F, 9, 1, 1);
+		Sword.addBox("Shape14", -8F, 57F, 0F, 8, 1, 1);
+		Sword.addBox("Shape15", -8F, 58F, 0F, 7, 1, 1);
+		Sword.addBox("Shape16", -8F, 59F, 0F, 6, 1, 1);
+		Sword.addBox("Shape17", -8F, 60F, 0F, 5, 1, 1);
+		Sword.addBox("Shape18", -8F, 61F, 0F, 4, 1, 1);
+		Sword.addBox("Shape19", -8F, 62F, 0F, 3, 1, 1);
+		Sword.addBox("Shape20", -8F, 63F, 0F, 2, 1, 1);
+		Sword.addBox("Shape21", -8F, 64F, 0F, 1, 1, 1);
+		Sword.addBox("Shape22", 2F, 4F, 0F, 2, 2, 1);
+		Sword.addBox("Shape23", 2F, 8F, 0F, 2, 2, 1);
+	}
   private void setRotation(ModelRenderer model, float x, float y, float z)
   {
 	    model.rotateAngleX = x;
@@ -74,42 +88,36 @@ public class EcModelZackSword extends ModelBase
   	@SideOnly(Side.CLIENT)
 	public void renderItem(ItemStack pitem, EntityLiving pentity) {
 
-  		Minecraft MC = Minecraft.getMinecraft();
+		Minecraft MC = Minecraft.getMinecraft();
   		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glPushMatrix();
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, MC.renderEngine.getTexture(EnchantChanger.EcSwordPNG));
-
-
-	    if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, MC.renderEngine.getTexture(EnchantChanger.EcZackSwordPNG));
+		if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
 			//Guard
-	    	//GL11.glTranslatef(-1.0F, 0.1F, 0.3F);
-			GL11.glRotatef(25.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glRotatef(10.0F, 1.0F, 0.0F, 0.0F);
 			//ViewChange
 			if (MC.gameSettings.thirdPersonView == 0) {
-				GL11.glTranslatef(1.3F, 0.0F, 0.5F);
-				GL11.glRotatef(70F, 0F, 0F, 1F);
+				GL11.glTranslatef(0.2F, -0.5F, 0.5F);
+//				GL11.glRotatef(70F, 0F, 0F, 1F);
 			}
+			else
+				GL11.glTranslatef(0F, -0.1F, 0F);
 		} else {
 			//ViewChange
 			if (MC.gameSettings.thirdPersonView == 0) {
-				GL11.glTranslatef(1F, -1F, 0.5F);
-				GL11.glRotatef(90F, 0F, 1F, 0F);
-				GL11.glRotatef(20F, 0F, 0F, 1F);
+//				GL11.glTranslatef(1F, -1F, 0.5F);
+//				GL11.glRotatef(90F, 0F, 1F, 0F);
+//				GL11.glRotatef(20F, 0F, 0F, 1F);
 			}
 		}
+		GL11.glTranslatef(0.5F, 0.5F, -0.05F);
+		GL11.glScalef(1F, 1F, 0.4F);
+//		GL11.glRotatef(0F, 1.0F, 1.0F, 0.0F);
+//		GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(50.0F, 0.0F, 0.0F, 1.0F);
 
-	    GL11.glTranslatef(0F, 0F, 0F);
-	    GL11.glScalef(0.07F, 0.12F, 0.12F);
-	    GL11.glRotatef(0.0F, 1.0F, 1.0F, 0.0F);
-	    GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
-	    GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
-	    GL11.glTranslatef(0.05F, 0.0F, 0.0F);
-
-	    Sword.render(1.0F);
-	    GL11.glPopMatrix();
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		Sword.render(0.03F);
+		GL11.glPopMatrix();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 }

@@ -32,10 +32,10 @@ public class LivingEventHooks
 	private int FlightMptime=20*3;
 	private int GGMptime = 20*1;
 	private int AbsorpMptime = 20*3;
-    private int[] Count= new int[]{0,0,0,0,0,0,0,0,0,0};
+	private int[] Count= new int[]{0,0,0,0,0,0,0,0,0,0};
 	private int mptimer = this.FlightMptime;
-//	private boolean jump01 = false;
-//	private boolean jump02 = false;
+	//	private boolean jump01 = false;
+	//	private boolean jump02 = false;
 	@ForgeSubscribe
 	public void LivingUpdate(LivingUpdateEvent event)
 	{
@@ -60,8 +60,8 @@ public class LivingEventHooks
 		if(side == Side.CLIENT)
 		{
 			boolean jump = ((EntityPlayerSP)player).movementInput.jump;
-            float var2 = 0.8F;
-            boolean var3 = ((EntityPlayerSP)player).movementInput.moveForward >= var2;
+			float var2 = 0.8F;
+			boolean var3 = ((EntityPlayerSP)player).movementInput.moveForward >= var2;
 			((EntityPlayerSP)player).movementInput.updatePlayerMoveState();
 			if (this.allowLevitatiton && !jump && ((EntityPlayerSP)player).movementInput.jump)
 			{
@@ -117,11 +117,11 @@ public class LivingEventHooks
 			}
 			else
 				player.jumpMovementFactor = 0.02f;
-	    	if (player.onGround && this.isLevitation)
-	    	{
-	    		this.isLevitation = false;
-	    	}
-	    	PacketDispatcher.sendPacketToServer(Packet_EnchantChanger.getPacketLevi(this));
+			if (player.onGround && this.isLevitation)
+			{
+				this.isLevitation = false;
+			}
+			PacketDispatcher.sendPacketToServer(Packet_EnchantChanger.getPacketLevi(this));
 		}
 		if(this.isLevitation)
 			if(this.mptimer ==0)
@@ -144,10 +144,10 @@ public class LivingEventHooks
 			return;
 		}
 		ItemStack playerItem = player.getCurrentEquippedItem();
-		if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == EnchantChanger.materiamax + 1 +  1 * EnchantChanger.MaxLv)
+		if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == 2)
 		{
 			player.capabilities.disableDamage = true;
-			if(MpCount(1,EnchantChanger.GGMptime))
+			if(MpCount(1,GGMptime))
 				player.getFoodStats().addStats(-1, 1.0f);
 		}
 		else
@@ -159,12 +159,12 @@ public class LivingEventHooks
 	{
 		if(player.getFoodStats().getFoodLevel() < 20)
 		{
-			if(!MpCount(3,EnchantChanger.AbsorpMptime))
+			if(!MpCount(3,AbsorpMptime))
 			{
 				return;
 			}
 			ItemStack playerItem = player.getCurrentEquippedItem();
-			if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == EnchantChanger.materiamax + 1 +  7 * EnchantChanger.MaxLv)
+			if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == 8)
 			{
 				List EntityList = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(EnchantChanger.AbsorpBoxSize, EnchantChanger.AbsorpBoxSize, EnchantChanger.AbsorpBoxSize));
 				for (int i=0; i < EntityList.size();i++)
@@ -193,35 +193,35 @@ public class LivingEventHooks
 			return false;
 		}
 	}
-    public static boolean checkFlightItem(ItemStack itemstack)
-    {
-    	if(itemstack == null)
-    	{
-    		return false;
-    	}
-    	else if(itemstack.getItem() instanceof EcItemMateria || itemstack.getItem() instanceof EcItemSword)
-    	{
-    		if(itemstack.getItem() instanceof EcItemMateria)
-    		{
-    			if(itemstack.getItemDamage() >= EnchantChanger.materiamax + 1 + 3* EnchantChanger.MaxLv && itemstack.getItemDamage() <= EnchantChanger.materiamax + 1 + 3* EnchantChanger.MaxLv )
-    			{
-    				return true;
-    			}
-    			else
-    			{
-    				return false;
-    			}
-    		}
-    		else
-    		{
-    			return EcItemSword.hasFloat(itemstack);
-    		}
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
+	public static boolean checkFlightItem(ItemStack itemstack)
+	{
+		if(itemstack == null)
+		{
+			return false;
+		}
+		else if(itemstack.getItem() instanceof EcItemMateria || itemstack.getItem() instanceof EcItemSword)
+		{
+			if(itemstack.getItem() instanceof EcItemMateria)
+			{
+				if(itemstack.getItemDamage() == 4)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return EcItemSword.hasFloat(itemstack);
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 	public void checkMagic(World world, EntityPlayer player)
 	{
 		ItemStack itemstack = player.getHeldItem();
@@ -230,10 +230,10 @@ public class LivingEventHooks
 			EcItemSword.doMagic(itemstack, world, player);
 		}
 	}
-    public static boolean checkFlightIteminInv(EntityPlayer entityplayer)
+	public static boolean checkFlightIteminInv(EntityPlayer entityplayer)
 	{
 		boolean ret=false;
-    	for(int i=0;i<9;i++)
+		for(int i=0;i<9;i++)
 		{
 			ItemStack var1 = entityplayer.inventory.getStackInSlot(i);
 			if( checkFlightItem(var1))
@@ -241,37 +241,37 @@ public class LivingEventHooks
 		}
 		return ret;
 	}
-    public void sendLevitation()
-    {
-    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    	DataOutputStream dos = new DataOutputStream(bos);
-    	try {
-    		dos.writeBoolean(isLevitation);
-    		PacketDispatcher.sendPacketToServer(new Packet250CustomPayload("EC|Levi", bos.toByteArray()));
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    }
- 	public void readPacketData(ByteArrayDataInput data)
- 	{
- 		try
- 		{
- 			this.isLevitation = data.readBoolean();
- 		}
- 		catch (Exception e)
- 		{
- 			e.printStackTrace();
- 		}
- 	}
- 	public void writePacketData(DataOutputStream dos)
- 	{
- 		try
- 		{
- 			dos.writeBoolean(this.isLevitation);
- 		}
- 		catch (Exception e)
- 		{
- 			e.printStackTrace();
- 		}
- 	}
+	public void sendLevitation()
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bos);
+		try {
+			dos.writeBoolean(isLevitation);
+			PacketDispatcher.sendPacketToServer(new Packet250CustomPayload("EC|Levi", bos.toByteArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void readPacketData(ByteArrayDataInput data)
+	{
+		try
+		{
+			this.isLevitation = data.readBoolean();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	public void writePacketData(DataOutputStream dos)
+	{
+		try
+		{
+			dos.writeBoolean(this.isLevitation);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

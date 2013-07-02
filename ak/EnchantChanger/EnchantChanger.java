@@ -1,19 +1,18 @@
 package ak.EnchantChanger;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import ak.EnchantChanger.Client.EcRenderHugeMateria;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.ModLoader;
-import net.minecraft.util.MathHelper;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.Configuration;
@@ -35,8 +34,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.5p-universal")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"EC|Levi","EC|CSC","EC|CS"}, packetHandler=Packet_EnchantChanger.class)
+@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.6b-universal")
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"EC|Levi","EC|CSC","EC|CS","EC|Sw"}, packetHandler=Packet_EnchantChanger.class)
 public class EnchantChanger //extends BaseMod
 {
 	public static int ExExpBottleID ;
@@ -76,20 +75,12 @@ public class EnchantChanger //extends BaseMod
 	public static ArrayList<Integer> BowIdArray = new ArrayList<Integer>();
 	public static String ArmorIds = "";
 	public static ArrayList<Integer> ArmorIdArray = new ArrayList<Integer>();
-	public static String ExtraEnchantName = "";
-	public static ArrayList<String> ExtraEnchantNameArray = new ArrayList<String>();
-	public static String ExtraEnchantIds = "";
-	public static ArrayList<Integer> ExtraEnchantIdArray = new ArrayList<Integer>();
-	public static boolean canExtraEnchantExttoBase;
-//	public static boolean canEnchantover5;
+
 	public static boolean DecMateriaLv;
 	public static boolean YouAreTera;
 	public static int MateriaPotionMinutes;
 	public static int Difficulty;
-	public static int MaxLv;
-	public static int materiamax;
 	public static int MagicMateriaNumMax;
-	public static int VanillaEnchNum = 22;
 
 	public static int EnchantmentMeteoId;
 	public static Enchantment Meteo;
@@ -104,8 +95,8 @@ public class EnchantChanger //extends BaseMod
 
 	public static String EcSprites ="/ak/EnchantChanger/mod_EnchantChanger/gui/items.png";
 	public static String EcTerrain = "/ak/EnchantChanger/mod_EnchantChanger/terrain.png";
-	public static String EcSwordPNG ="/ak/EnchantChanger/mod_EnchantChanger/item/Sword.png";
-	public static String EcSword2PNG ="/ak/EnchantChanger/mod_EnchantChanger/item/Sword-3Dtrue.png";
+	public static String EcZackSwordPNG ="/ak/EnchantChanger/mod_EnchantChanger/item/ZackSword.png";
+	public static String EcSephirothSwordPNG ="/ak/EnchantChanger/mod_EnchantChanger/item/SephirothSword.png";
 	public static String EcCloudSwordPNG ="/ak/EnchantChanger/mod_EnchantChanger/item/CloudSword.png";
 	public static String EcCloudSword2PNG ="/ak/EnchantChanger/mod_EnchantChanger/item/CloudSword-3Dtrue.png";
 	public static String EcCloudSwordCorePNG ="/ak/EnchantChanger/mod_EnchantChanger/item/CloudSwordCore.png";
@@ -114,17 +105,11 @@ public class EnchantChanger //extends BaseMod
 	public static String EcGuiMaterializer ="/ak/EnchantChanger/mod_EnchantChanger/gui/materializer.png";
 	public static String EcGuiHuge = "/ak/EnchantChanger/mod_EnchantChanger/gui/HugeMateriaContainer.png";
 	public static String EcHugetex ="/ak/EnchantChanger/mod_EnchantChanger/item/hugemateriatex.png";
-
-	//public static  ItemStack[] Magic = new ItemStack[EcItemMateria.MagicMateriaNum];
-	public static int FlightMptime = 20*6;
-	public static int GGMptime = 20*1;
-	public static int HasteMptime = 20*3;
-	public static int AbsorpMptime = 20*3;
-	public static int AttackSeveralMpTime = 10;
-	public static int AttackTime = 0;
 	public static double AbsorpBoxSize = 5D;
+	public int MaxLv = 127;
 
 	public static boolean incompatible = false;
+	public static boolean loadMTH = false;
 	@Instance("EnchantChanger")
 	public static EnchantChanger instance;
 	@SidedProxy(clientSide = "ak.EnchantChanger.Client.ClientProxy", serverSide = "ak.EnchantChanger.CommonProxy")
@@ -133,10 +118,8 @@ public class EnchantChanger //extends BaseMod
 	public static int guiIdPortableEnchantmentTable = 1;
 	public static int guiIdHugeMateria=2;
 
-	public int[] VanillaEnchant = new int[]{0,1,2,3,4,5,6,7,16,17,18,19,20,21,32,33,34,35,48,49,50,51};
 	public static final CreativeTabs tabsEChanger = new CreativeTabEC("EnchantChanger");
 	public static LivingEventHooks livingeventhooks;
-	public ItemStack[] Magic = new ItemStack[EcItemMateria.MagicMateriaNum];
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -175,11 +158,6 @@ public class EnchantChanger //extends BaseMod
 		Property ArmorIdsProp = config.get(Configuration.CATEGORY_GENERAL, "Extra ArmorIds", "298");
 		ArmorIdsProp.comment="Put Ids which you want to operate as  armors. Usage: 1,2,3";
 		ArmorIds = ArmorIdsProp.value;
-		//ExtraEnchantIds = config.get(Configuration.CATEGORY_GENERAL, "Extra EnchantIds", "").value;
-		//ExtraEnchantName = config.get(Configuration.CATEGORY_GENERAL, "Extra EnchantNames", "").value;
-		Property canExtraEnchantExttoBaseProp = config.get(Configuration.CATEGORY_GENERAL, "canExtraEnchantExttoBase", false);
-		canExtraEnchantExttoBaseProp.comment="TRUE:Enchantments which is added by other Mods is extracted to Materia of Base.";
-		canExtraEnchantExttoBase =canExtraEnchantExttoBaseProp.getBoolean(false);
 		Property DecMateriaLvProp = config.get(Configuration.CATEGORY_GENERAL, "DecMateriaLv", false);
 		DecMateriaLvProp.comment= "TRUE:The level of extracted Materia is decreased by the item damage";
 		DecMateriaLv = DecMateriaLvProp.getBoolean(false);
@@ -199,11 +177,7 @@ public class EnchantChanger //extends BaseMod
 		Property DifficultyProp = config.get(Configuration.CATEGORY_GENERAL, "Difficulty", 1);
 		DifficultyProp.comment="Difficulty of this MOD. 0 = Easy, 1 = Normal, 2 = Hard";
 		Difficulty = DifficultyProp.getInt();
-		Property MaxLvProp = config.get(Configuration.CATEGORY_GENERAL, "MaxLv", 100);
-		MaxLvProp.comment="Maximum System Enchantment Level. Don't Set less than 10 and more than 127";
-		MaxLv = (MaxLvProp.getInt() > 127)? 127:MaxLvProp.getInt();
-		materiamax  = 22 * MaxLv;
-		MagicMateriaNumMax = EcItemMateria.MagicMateriaNum * MaxLv;
+
 		EnchantmentMeteoId = config.get(Configuration.CATEGORY_GENERAL, "EnchantmentMeteoId", 240).getInt();
 		EndhantmentHolyId = config.get(Configuration.CATEGORY_GENERAL, "EndhantmentHolyId", 241).getInt();
 		EnchantmentTelepoId = config.get(Configuration.CATEGORY_GENERAL, "EnchantmentTelepoId", 242).getInt();
@@ -240,14 +214,7 @@ public class EnchantChanger //extends BaseMod
 		GameRegistry.registerBlock(BlockMat,"EnchantChanger");
 		GameRegistry.registerTileEntity(EcTileEntityMaterializer.class, "container.materializer");
 		GameRegistry.registerTileEntity(EcTileEntityHugeMateria.class, "container.hugeMateria");
-		MinecraftForgeClient.registerItemRenderer(SephirothSwordItemID, (EcItemSephirothSword)ItemSephirothSword);
-		MinecraftForgeClient.registerItemRenderer(ZackSwordItemID, (EcItemZackSword)ItemZackSword);
-		MinecraftForgeClient.registerItemRenderer(FirstSwordItemID, (EcItemCloudSwordCore)ItemCloudSwordCore);
-		MinecraftForgeClient.registerItemRenderer(CloudSwordItemID, (EcItemCloudSword)ItemCloudSword);
-		MinecraftForgeClient.registerItemRenderer(UltimateWeaponItemID, (EcItemUltimateWeapon)ItemUltimateWeapon);
-		//		EntityRegistry.registerGlobalEntityID(EcEntityExExpBottle.class, "ItemExExpBottle", 150);
 		EntityRegistry.registerModEntity(EcEntityExExpBottle.class, "ItemExExpBottle", 0, this, 250, 5, true);
-		//		EntityRegistry.registerGlobalEntityID(EcEntityMeteo.class, "Meteo", 151);
 		EntityRegistry.registerModEntity(EcEntityMeteo.class, "Meteo", 1, this, 250, 5, true);
 
 		//"this" is an instance of the mod class
@@ -269,11 +236,7 @@ public class EnchantChanger //extends BaseMod
 			MinecraftForge.removeBlockEffectiveness(block, "FF7");
 			MinecraftForge.setBlockHarvestLevel(block, "FF7", 0);
 		}
-		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
-		{
-			Magic[i]=new ItemStack(ItemMat, 1, materiamax + 1 +  i * MaxLv);
-			//Magic = new ItemStack[]{new ItemStack(ItemMat, 1, materiamax + 1), new ItemStack(ItemMat, 1, materiamax + 1 + 1*MaxLv),new ItemStack(ItemMat, 1, materiamax + 1 + 2*MaxLv), new ItemStack(ItemMat, 1, materiamax + 1 + 3*MaxLv), new ItemStack(ItemMat, 1, materiamax + 1 + 4*MaxLv),new ItemStack(ItemMat, 1, materiamax + 1 + 5*MaxLv),new ItemStack(ItemMat, 1, materiamax + 1 + 6*MaxLv),new ItemStack(ItemMat, 1, materiamax + 1 + 7*MaxLv)};
-		}
+
 		StringtoInt(SwordIds,SwordIdArray);
 		StringtoInt(ToolIds,ToolIdArray);
 		StringtoInt(BowIds,BowIdArray);
@@ -281,38 +244,32 @@ public class EnchantChanger //extends BaseMod
 
 
 		GameRegistry.addRecipe(new EcMateriaRecipe());
+		GameRegistry.addRecipe(new EcMasterMateriaRecipe());
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
 		GameRegistry.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
 		GameRegistry.addRecipe(new ItemStack(ItemCloudSwordCore, 1), new Object[]{" X ","XYX"," Z ", Character.valueOf('X'), Block.blockSteel, Character.valueOf('Y'), new ItemStack(ItemMat, 1,0), Character.valueOf('Z'),Item.ingotIron});
-//		GameRegistry.addRecipe(new ItemStack(ItemCloudSword , 1), new Object[]{"BCB","DED", Character.valueOf('C'),new ItemStack(Item.swordSteel, 1,0), Character.valueOf('B'),new ItemStack(Item.swordGold, 1, 0),Character.valueOf('E'),ItemCloudSwordCore, Character.valueOf('D'),new ItemStack(Item.swordDiamond, 1, 0)});
-		GameRegistry.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),Magic[0]});
+		GameRegistry.addRecipe(new ItemStack(ItemSephirothSword, 1), new Object[]{"  A"," B ","C  ",Character.valueOf('A'),Item.ingotIron, Character.valueOf('B'),new ItemStack(Item.swordDiamond, 1, 0), Character.valueOf('C'),new ItemStack(ItemMat, 1, 1)});
 		GameRegistry.addRecipe(new ItemStack(ItemUltimateWeapon, 1), new Object[]{" A ","ABA"," C ", Character.valueOf('A'),Block.blockDiamond, Character.valueOf('B'), new ItemStack(MasterMateria, 1,-1), Character.valueOf('C'),Item.stick});
 		GameRegistry.addRecipe(new ItemStack(BlockMat, 1), new Object[]{"XYX","ZZZ", Character.valueOf('X'),Item.diamond, Character.valueOf('Y'),Block.blockGold, Character.valueOf('Z'),Block.obsidian});
 		GameRegistry.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',Item.netherStar});
 		GameRegistry.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',new ItemStack(MasterMateria,1,-1)});
-//		GameRegistry.addRecipe(new ItemStack(HugeMateria), new Object[]{" A ","ABA"," A ",'A',Block.blockDiamond,'B',MasterMateria});
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemPortableEnchantChanger,1),  new Object[]{BlockMat});
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemPortableEnchantmentTable,1),  new Object[]{Block.enchantmentTable});
 		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,0), new Object[]{new ItemStack(MasterMateria,1,1), new ItemStack(MasterMateria,1,2), new ItemStack(MasterMateria,1,3), new ItemStack(MasterMateria,1,4), new ItemStack(MasterMateria,1,5)});
-		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,1), new Object[]{new ItemStack(ItemMat,1, 0*this.MaxLv + 10),new ItemStack(ItemMat,1, 1*this.MaxLv + 10), new ItemStack(ItemMat,1, 2*this.MaxLv + 10), new ItemStack(ItemMat,1, 3*this.MaxLv + 10), new ItemStack(ItemMat,1, 4*this.MaxLv + 10), new ItemStack(ItemMat,1, 7*this.MaxLv + 10)});
-		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,2), new Object[]{new ItemStack(ItemMat,1, 5*this.MaxLv + 10),new ItemStack(ItemMat,1, 6*this.MaxLv + 10)});
-		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,3), new Object[]{new ItemStack(ItemMat,1, 8*this.MaxLv + 10),new ItemStack(ItemMat,1, 9*this.MaxLv + 10), new ItemStack(ItemMat,1, 10*this.MaxLv + 10), new ItemStack(ItemMat,1, 11*this.MaxLv + 10), new ItemStack(ItemMat,1, 12*this.MaxLv + 10), new ItemStack(ItemMat,1, 13*this.MaxLv + 10)});
-		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,4), new Object[]{new ItemStack(ItemMat,1, 14*this.MaxLv + 10),new ItemStack(ItemMat,1, 15*this.MaxLv + 10), new ItemStack(ItemMat,1, 16*this.MaxLv + 10), new ItemStack(ItemMat,1, 17*this.MaxLv + 10)});
-		GameRegistry.addShapelessRecipe(new ItemStack(MasterMateria,1,5), new Object[]{new ItemStack(ItemMat,1, 18*this.MaxLv + 10),new ItemStack(ItemMat,1, 19*this.MaxLv + 10), new ItemStack(ItemMat,1, 20*this.MaxLv + 10), new ItemStack(ItemMat,1, 21*this.MaxLv + 10)});
 		if(this.Difficulty == 0)
 			GameRegistry.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
 		GameRegistry.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
-
 		GameRegistry.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
-		DungeonLootItemResist();
+
 		if(this.Debug)
 			DebugSystem();
 	}
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		this.AddExtraEnchantment(ExtraEnchantIdArray,ExtraEnchantNameArray);
+		this.loadMTH = Loader.isModLoaded("MultiToolHolders");
 		this.AddLocalization();
+		DungeonLootItemResist();
 		this.incompatible = this.checkCompatibility();
 	}
 	public void AddLocalization()
@@ -348,30 +305,21 @@ public class EnchantChanger //extends BaseMod
 		LanguageRegistry.instance().addNameForObject(ItemPortableEnchantmentTable, "ja_JP","携帯エンチャントテーブル");
 		LanguageRegistry.instance().addStringLocalization("ItemMateria.Base.name", "Inactive Materia");
 		LanguageRegistry.instance().addStringLocalization("ItemMateria.Base.name", "ja_JP","不活性マテリア");
+		LanguageRegistry.instance().addStringLocalization("ItemMateria.name", "Materia");
+		LanguageRegistry.instance().addStringLocalization("ItemMateria.name", "ja_JP","マテリア");
 		LanguageRegistry.instance().addStringLocalization("container.materializer", "Enchant Changer");
 		LanguageRegistry.instance().addStringLocalization("container.materializer", "ja_JP", "エンチャントチェンジャー");
 		LanguageRegistry.instance().addStringLocalization("container.hugeMateria", "HugeMateria");
 		LanguageRegistry.instance().addStringLocalization("container.hugeMateria", "ja_JP", "ヒュージマテリア");
-		for (int i = 1; i <= materiamax; i++)
-		{
-			int var1 = (i-1) / MaxLv;
-			int var2 = (i % MaxLv != 0)? i % MaxLv : MaxLv;
-			LanguageRegistry.instance().addStringLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", " Materia of "+EcItemMateria.MateriaNames[var1]+" Lv."+var2);
-			LanguageRegistry.instance().addStringLocalization("ItemMateria." + Enchantment.enchantmentsList[this.VanillaEnchant[var1]].getName()+"."+var2+".name", "ja_JP",EcItemMateria.MateriaJPNames[var1]+"マテリア Lv."+var2);
-		}
+		LanguageRegistry.instance().addStringLocalization("Key.EcMagic", "Magic Key");
+		LanguageRegistry.instance().addStringLocalization("Key.EcMagic", "ja_JP", "魔法キー");
+
 		for(int i=0;i < EcItemMateria.MagicMateriaNum;i++)
 		{
-//			Magic[i]=new ItemStack(ItemMat, 1, materiamax + 1 +  i * MaxLv);
 			LanguageRegistry.instance().addStringLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", EcItemMateria.MateriaMagicNames[i]+" Materia");
 			LanguageRegistry.instance().addStringLocalization("ItemMateria." + EcItemMateria.MateriaMagicNames[i]+".name", "ja_JP",EcItemMateria.MateriaMagicJPNames[i]+"マテリア");
 		}
-		for(int i=0; i < ExtraEnchantNameArray.size();i++)
-		{
-			for(int j=1;j<=MaxLv;j++)
-			{
-				LanguageRegistry.instance().addStringLocalization("ItemMateria."+ ExtraEnchantNameArray.get(i) +"."+ j + ".name", "Materia of "+ ExtraEnchantNameArray.get(i) + " Lv."+ j );
-			}
-		}
+
 		for(int i = 0;i< EcItemMasterMateria.MasterMateriaNum;i++)
 		{
 			LanguageRegistry.instance().addStringLocalization("ItemMasterMateria." + i + ".name", "Master Materia of " + EcItemMasterMateria.MasterMateriaNames[i]);
@@ -382,39 +330,49 @@ public class EnchantChanger //extends BaseMod
 			LanguageRegistry.instance().addStringLocalization("enchantment.level."+i, i+"");
 		}
 	}
-	public void AddExtraEnchantment(ArrayList<Integer> IDList, ArrayList<String> NameList)
+	public static void addEnchantmentToItem(ItemStack item, Enchantment enchantment, int Lv)
 	{
-		int[] vanilla = new int[]{0,1,2,3,4,5,6,7,16,17,18,19,20,21,32,33,34,35,48,49,50,51,this.EnchantmentMeteoId,this.EndhantmentHolyId,this.EnchantmentTelepoId,this.EnchantmentFloatId,this.EnchantmentThunderId};
-		String EnchName;
-		boolean isvanillaenchid=false;
-		for (int i=0;i<256;i++)
+		if (item.stackTagCompound == null)
 		{
-			if(Enchantment.enchantmentsList[i] != null)
+			item.setTagCompound(new NBTTagCompound());
+		}
+
+		if (!item.stackTagCompound.hasKey("ench"))
+		{
+			item.stackTagCompound.setTag("ench", new NBTTagList("ench"));
+		}
+
+		NBTTagList var3 = (NBTTagList)item.stackTagCompound.getTag("ench");
+		NBTTagCompound var4 = new NBTTagCompound();
+		var4.setShort("id", (short)enchantment.effectId);
+		var4.setShort("lvl", (short)(Lv));
+		var3.appendTag(var4);
+	}
+	public static int getMateriaEnchKind(ItemStack item)
+	{
+		int EnchantmentKind = 256;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
 			{
-				for (int j=0;j<vanilla.length;j++)
-				{
-					if(i == vanilla[j])
-						isvanillaenchid=true;
-				}
-				if(! isvanillaenchid)
-				{
-					IDList.add(i);
-					//String EnchName = StatCollector.translateToLocal("enchantment."+Enchantment.enchantmentsList[i].name);
-					EnchName=Enchantment.enchantmentsList[i].getName();
-					if(i==136)
-					{
-						EnchName = "Fiery Aura";
-					}
-					else
-						EnchName = StatCollector.translateToLocal(EnchName);
-					NameList.add(EnchName);
-				}
-				else
-				{
-					isvanillaenchid = false;
-				}
+				EnchantmentKind = i;
+				break;
 			}
 		}
+		return EnchantmentKind;
+	}
+	public static int getMateriaEnchLv(ItemStack item)
+	{
+		int Lv = 0;
+		for(int i = 0; i < Enchantment.enchantmentsList.length; i++)
+		{
+			if(EnchantmentHelper.getEnchantmentLevel(i, item) > 0)
+			{
+				Lv = EnchantmentHelper.getEnchantmentLevel(i, item);
+				break;
+			}
+		}
+		return Lv;
 	}
 	public void StringtoInt(String ExtraIDs, ArrayList<Integer> IDList)
 	{

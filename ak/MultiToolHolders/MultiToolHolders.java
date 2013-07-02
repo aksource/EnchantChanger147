@@ -24,18 +24,20 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="MultiToolHolders", name="MultiToolHolders", version="1.0b")
+@Mod(modid="MultiToolHolders", name="MultiToolHolders", version="1.1")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"MTH|Tool"}, packetHandler=PacketHandler.class)
 public class MultiToolHolders //extends BaseMod
 {
 	public static int ItemIDShift;
 	public static  Item ItemMultiToolHolder3;
 	public static  Item ItemMultiToolHolder5;
+	public static  Item ItemMultiToolHolder7;
 	public static  Item ItemMultiToolHolder9;
 	public static boolean Debug;
 
 	public static String GuiToolHolder3 ="/ak/MultiToolHolders/textures/gui/ToolHolder3.png";
 	public static String GuiToolHolder5 ="/ak/MultiToolHolders/textures/gui/ToolHolder5.png";
+	public static String GuiToolHolder7 ="/ak/MultiToolHolders/textures/gui/ToolHolder7.png";
 	public static String GuiToolHolder9 ="/ak/MultiToolHolders/textures/gui/ToolHolder9.png";
 	public static String TextureDomain = "ak/MultiToolHolders:";
 
@@ -49,6 +51,7 @@ public class MultiToolHolders //extends BaseMod
 	public static int guiIdHolder3 = 0;
 	public static int guiIdHolder5 = 1;
 	public static int guiIdHolder9 = 2;
+	public static int guiIdHolder7 = 3;
 
 
 	@PreInit
@@ -70,20 +73,18 @@ public class MultiToolHolders //extends BaseMod
 	public void load(FMLInitializationEvent event)
 	{
 		ItemMultiToolHolder3 = (new ItemMultiToolHolder(ItemIDShift - 256, 3)).setItemName(this.TextureDomain + "Holder3").setCreativeTab(CreativeTabs.tabTools).setIconIndex(0);
-		ItemMultiToolHolder5 = (new ItemMultiToolHolder(ItemIDShift - 256 + 1, 5)).setItemName(this.TextureDomain + "Holder5").setCreativeTab(CreativeTabs.tabTools).setIconIndex(1);
+		ItemMultiToolHolder5 = (new ItemMultiToolHolder(ItemIDShift - 256 + 1, 5)).setItemName(this.TextureDomain + "Holder5").setCreativeTab(CreativeTabs.tabTools).setIconIndex(3);
 		ItemMultiToolHolder9 = (new ItemMultiToolHolder(ItemIDShift - 256 + 2, 9)).setItemName(this.TextureDomain + "Holder9").setCreativeTab(CreativeTabs.tabTools).setIconIndex(2);
-
-		MinecraftForgeClient.registerItemRenderer(ItemIDShift, (IItemRenderer) ItemMultiToolHolder3);
-		MinecraftForgeClient.registerItemRenderer(ItemIDShift + 1, (IItemRenderer) ItemMultiToolHolder5);
-		MinecraftForgeClient.registerItemRenderer(ItemIDShift + 2, (IItemRenderer) ItemMultiToolHolder9);
+		ItemMultiToolHolder7 = (new ItemMultiToolHolder(ItemIDShift - 256 + 3, 7)).setItemName(this.TextureDomain + "Holder7").setCreativeTab(CreativeTabs.tabTools).setIconIndex(1);
 
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
 		proxy.registerClientInformation();
 		proxy.registerTileEntitySpecialRenderer();
 
 		GameRegistry.addRecipe(new ItemStack(ItemMultiToolHolder3), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotIron,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Block.tripWireSource});
-		GameRegistry.addRecipe(new ItemStack(ItemMultiToolHolder5), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotGold,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Block.tripWireSource});
+		GameRegistry.addRecipe(new ItemStack(ItemMultiToolHolder7), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.ingotGold,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Block.tripWireSource});
 		GameRegistry.addRecipe(new ItemStack(ItemMultiToolHolder9), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), Item.diamond,Character.valueOf('B'),Block.chest, Character.valueOf('C'),Block.tripWireSource});
+		GameRegistry.addRecipe(new ItemStack(ItemMultiToolHolder5), new Object[]{"AAA","ABA", "CCC", Character.valueOf('A'), new ItemStack(Item.dyePowder,1,4),Character.valueOf('B'),Block.chest, Character.valueOf('C'),Block.tripWireSource});
 		if(this.Debug)
 			DebugSystem();
 	}
@@ -97,10 +98,12 @@ public class MultiToolHolders //extends BaseMod
 		LanguageRegistry.addName(ItemMultiToolHolder3, "3-Way Tool Holder");
 		LanguageRegistry.addName(ItemMultiToolHolder5, "5-Way Tool Holder");
 		LanguageRegistry.addName(ItemMultiToolHolder9, "9-Way Tool Holder");
+		LanguageRegistry.addName(ItemMultiToolHolder7, "7-Way Tool Holder");
 
 		LanguageRegistry.instance().addNameForObject(ItemMultiToolHolder3, "ja_JP","3-Wayツールホルダー");
 		LanguageRegistry.instance().addNameForObject(ItemMultiToolHolder5, "ja_JP","5-Wayツールホルダー");
 		LanguageRegistry.instance().addNameForObject(ItemMultiToolHolder9, "ja_JP","9-Wayツールホルダー");
+		LanguageRegistry.instance().addNameForObject(ItemMultiToolHolder7, "ja_JP","7-Wayツールホルダー");
 
 		LanguageRegistry.instance().addStringLocalization("container.toolholder", "ToolHolder");
 		LanguageRegistry.instance().addStringLocalization("container.toolholder", "ja_JP", "ツールホルダー");
@@ -117,8 +120,8 @@ public class MultiToolHolders //extends BaseMod
 	{
 		WeightedRandomChestContent Chest;
 
-		ItemStack[] items = new ItemStack[]{new ItemStack(ItemMultiToolHolder3),new ItemStack(ItemMultiToolHolder5),new ItemStack(ItemMultiToolHolder9)};
-		int[] weights = new int[]{10,5,1};
+		ItemStack[] items = new ItemStack[]{new ItemStack(ItemMultiToolHolder3),new ItemStack(ItemMultiToolHolder5),new ItemStack(ItemMultiToolHolder7),new ItemStack(ItemMultiToolHolder9)};
+		int[] weights = new int[]{10,5,3,1};
 		for (int i= 0;i<items.length;i++)
 		{
 			Chest = new WeightedRandomChestContent(items[i], 0, 1, weights[i]);;

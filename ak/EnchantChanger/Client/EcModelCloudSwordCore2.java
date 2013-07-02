@@ -10,9 +10,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import ak.EnchantChanger.EnchantChanger;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 public class EcModelCloudSwordCore2 extends ModelBase
@@ -153,15 +150,15 @@ public class EcModelCloudSwordCore2 extends ModelBase
 		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
 	}
   	@SideOnly(Side.CLIENT)
-	public void renderItem(ItemStack pitem, EntityLiving pentity) {
+	public void renderItem(ItemStack pitem, EntityLiving pentity, boolean mode) {
 
   		Minecraft MC = Minecraft.getMinecraft();
-  		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glPushMatrix();
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, MC.renderEngine.getTexture(EnchantChanger.EcCloudSwordCore2PNG));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, MC.renderEngine.getTexture(EnchantChanger.EcCloudSwordCore2PNG));
 
-	    /**
+		/**
 	    if (pentity instanceof EntityPlayer && ((EntityPlayer)pentity).isUsingItem()) {
 			//Guard
 	    	GL11.glTranslatef(0F, 0.2F, 0F);
@@ -181,68 +178,28 @@ public class EcModelCloudSwordCore2 extends ModelBase
 				GL11.glRotatef(20F, 0F, 0F, 1F);
 			}
 		}
-		*/
-	    /**
-	    if(this.checkmode(SwordMode))//EcItemCloudSwordCore.ActiveMode
-	    {
-	    	Blade1.setRotationPoint(9.5F, 5F, -0.5F);
-	    	Blade2.setRotationPoint(10.5F, 5F, -0.5F);
-	    	//System.out.println("Active");
-	    }
-	    else
-	    {
-	    	Blade1.setRotationPoint(10F, 5F, -0.5F);
-	    	Blade2.setRotationPoint(10F, 5F, -0.5F);
-	    	//System.out.println("Not Active");
-	    }
-		*/
-
-
-	    GL11.glScalef(1F, 1F, 0.4F);
-	    GL11.glRotatef(45.0F, 0.0F, 0.0F, 1.0F);
-
-	    Blade1.render(0.06f);
-	    Blade2.render(0.06f);
-	    Core.render(0.06f);
-	    tsuka.render(0.06f);
-	    GL11.glPopMatrix();
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-	}
-	public boolean checkmode(int mode)
-	{
-		//return (mode==0)? false:true;
-		if(mode==0)
+		 */
+		if(mode)
 		{
-			//System.out.println(this.mode);
-			return false;
+			Blade1.setRotationPoint(9.5F, 5F, -0.5F);
+			Blade2.setRotationPoint(10.5F, 5F, -0.5F);
 		}
 		else
 		{
-			//System.out.println(this.mode);
-			return true;
+			Blade1.setRotationPoint(10F, 5F, -0.5F);
+			Blade2.setRotationPoint(10F, 5F, -0.5F);
 		}
+
+
+
+		GL11.glScalef(1F, 1F, 0.4F);
+		GL11.glRotatef(45.0F, 0.0F, 0.0F, 1.0F);
+
+		Blade1.render(0.06f);
+		Blade2.render(0.06f);
+		Core.render(0.06f);
+		tsuka.render(0.06f);
+		GL11.glPopMatrix();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
-	 // パケットの読み込み(パケットの受け取りはPacketHandlerで行う)
- 	public void readPacketData(ByteArrayDataInput data)
- 	{
- 		try
- 		{
- 			// byte型の読み込み
- 			this.SwordMode = data.readByte();
- 			System.out.println(this.SwordMode);
- 		}
- 		catch (Exception e)
- 		{
- 			e.printStackTrace();
- 		}
- 	}
-
-
- 	/**
-     * @return the instance
-     */
-    public static EcModelCloudSwordCore2 instance()
-    {
-        return INSTANCE;
-    }
 }

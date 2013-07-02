@@ -1,16 +1,11 @@
 package ak.EnchantChanger;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import ak.EnchantChanger.Client.EcKeyHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -62,15 +57,8 @@ public class CommonTickHandler implements ITickHandler
 
     	if(player != null)
     	{
-//    		GreatGospel(player);
-//    		Absorption(world,player);
     		this.LimitBreak(player);
     		this.LimitBreakCoolDown();
-//    		this.KeyControl();
-//    		if(this.MagicKeyActive)
-//    		{
-//    			this.checkMagic(world, player);
-//    		}
 
     	}
     }
@@ -81,71 +69,6 @@ public class CommonTickHandler implements ITickHandler
         //also put all the code in a if(world != null && !world.isRemote) statement, makes it so that you don't get NPEs from that.
 
     }
-    public void GreatGospel(EntityPlayer player)
-    {
-    	//System.out.println("GG");
-    	if(player.capabilities.isCreativeMode)
-    	{
-    		return;
-    	}
-    	if((player.getFoodStats().getFoodLevel() < 0 && !EnchantChanger.YouAreTera) || !EcItemMateria.GGEnable)
-    	{
-    		player.capabilities.disableDamage = false;
-    		return;
-    	}
-    	ItemStack playerItem = player.getCurrentEquippedItem();
-    	if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == EnchantChanger.materiamax + 1 +  1 * EnchantChanger.MaxLv)
-    	{
-    		player.capabilities.disableDamage = true;
-    		if(MpCount(1,EnchantChanger.GGMptime))
-    			player.getFoodStats().addStats(-1, 1.0f);
-    	}
-    	else
-    	{
-    		player.capabilities.disableDamage = false;
-    	}
-    }
-    public void Absorption(World world,EntityPlayer player)
-    {
-    	if(player.getFoodStats().getFoodLevel() < 20)
-    	{
-    		if(!MpCount(3,EnchantChanger.AbsorpMptime))
-    		{
-    			return;
-    		}
-    		ItemStack playerItem = player.getCurrentEquippedItem();
-        	if(playerItem !=null && playerItem.getItem() instanceof EcItemMateria && playerItem.getItemDamage() == EnchantChanger.materiamax + 1 +  7 * EnchantChanger.MaxLv)
-        	{
-	    		List EntityList = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(EnchantChanger.AbsorpBoxSize, EnchantChanger.AbsorpBoxSize, EnchantChanger.AbsorpBoxSize));
-	    		for (int i=0; i < EntityList.size();i++)
-	        	{
-	        		Entity entity=(Entity) EntityList.get(i);
-	        		if(entity instanceof EntityLiving)
-	        		{
-	        			((EntityLiving) entity).attackEntityFrom(DamageSource.generic, 1);
-	        			player.getFoodStats().addStats(1, 1.0f);
-//	        			System.out.println("Absorp!");
-	        		}
-	        		else
-	        		{
-	        			//entity.setDead();
-	        		}
-	        	}
-        	}
-    	}
-    }
-    public void KeyControl()
-    {
-    	this.MagicKeyActive = EcKeyHandler.MagicKeyDown && !this.MagicKeyActive;
-    }
-	public void checkMagic(World world, EntityPlayer player)
-	{
-		ItemStack itemstack = player.getHeldItem();
-		if(itemstack != null && itemstack.getItem() instanceof EcItemSword)
-		{
-			EcItemSword.doMagic(itemstack, world, player);
-		}
-	}
     public void LimitBreak(EntityPlayer player)
     {
     	for(int i=0;i < this.LimitBreakFlag.length;i++)
@@ -178,20 +101,6 @@ public class CommonTickHandler implements ITickHandler
     		{
     			this.LimitBreakCoolDownCount[i]--;
     		}
-    	}
-    }
-    public boolean MpCount(int par1, int par2)
-    {
-    	Count[par1]++;
-    	if(Count[par1] > par2)
-    	{
-    		Count[par1] =0;
-    		//System.out.println("MPDecrease");
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
     	}
     }
 }

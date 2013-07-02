@@ -21,21 +21,18 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import ak.EnchantChanger.Client.EcModelCloudSword2;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-public class EcItemCloudSword extends EcItemSword implements IItemRenderer
+public class EcItemCloudSword extends EcItemSword
 {
 	private int SlotNum = 5;
 	private EcCloudSwordData SwordData;
@@ -43,24 +40,7 @@ public class EcItemCloudSword extends EcItemSword implements IItemRenderer
 	public EcItemCloudSword(int par1)
     {
         super(par1, EnumToolMaterial.EMERALD);
-        this.setMaxDamage(-1);
     }
-
-    @Override
-   	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-   		return type == ItemRenderType.EQUIPPED;
-   	}
-   	@Override
-   	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-   		return false;
-   	}
-
-   	@Override
-   	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-   	{
-   		EcModelCloudSword2 CModel = new EcModelCloudSword2();
-   		CModel.renderItem(item, (EntityLiving)data[1]);
-   	}
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
 	{
 		if(this.SlotNum == 5)
@@ -82,7 +62,6 @@ public class EcItemCloudSword extends EcItemSword implements IItemRenderer
 		}
 		else
 		{
-			super.doMagic(par1ItemStack, par2World, par3EntityPlayer);
 			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 			if(par2World.isRemote)
 			{
@@ -98,7 +77,8 @@ public class EcItemCloudSword extends EcItemSword implements IItemRenderer
 		}
     }
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-		if (!par2World.isRemote && par3Entity instanceof EntityPlayer)
+		super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+    	if (!par2World.isRemote && par3Entity instanceof EntityPlayer)
 		{
 			this.SwordData = this.getSwordData(par1ItemStack, par2World);
 			this.SwordData.onUpdate(par2World, (EntityPlayer) par3Entity);
