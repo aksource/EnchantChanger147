@@ -3,11 +3,6 @@ package Nanashi.AdvancedTools;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
@@ -29,7 +24,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="AdvancedTools", name="AdvancedTools", version="2.0l-Unofficial")
+@Mod(modid="AdvancedTools", name="AdvancedTools", version="2.0n-Unofficial")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels="AT|Tool", packetHandler=PacketHandler.class)
 
 public class AdvancedTools
@@ -117,7 +112,7 @@ public class AdvancedTools
 //		EntityRegistry.registerGlobalEntityID(Entity_HighSpeedCreeper.class, "HighSpeedCreeper", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
 //		EntityRegistry.registerGlobalEntityID(Entity_GoldCreeper.class, "GoldCreeper", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
 
-		EntityRegistry.registerModEntity(Entity_ThrowingKnife.class, "ThrowingKnife", 0, this, 250, 1, true);
+		EntityRegistry.registerModEntity(Entity_ThrowingKnife.class, "ThrowingKnife", 0, this, 250, 20, true);
 		EntityRegistry.registerModEntity(Entity_HighSkeleton.class, "HighSkeleton", 1, this, 250, 1, true);
 		EntityRegistry.registerModEntity(Entity_SkeletonSniper.class, "SkeletonSniper", 2, this, 250, 1, true);
 		EntityRegistry.registerModEntity(Entity_ZombieWarrior.class, "ZombieWarrior", 3, this, 250, 1, true);

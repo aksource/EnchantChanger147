@@ -89,7 +89,7 @@ public class ItemUQStormBringer extends ItemUniqueArms
 							var12 = var21.posX - var3.posX;
 							double var22 = var21.posZ - var3.posZ;
 							double var16 = Math.atan2(var22, var12);
-							var21.setVelocity(Math.cos(var16) * 8.0D, var21.motionY * 1.7D, Math.sin(var16) * 8.0D);
+							var21.addVelocity(Math.cos(var16) * 8.0D, var21.motionY * 1.7D, Math.sin(var16) * 8.0D);
 						}
 					}
 			}

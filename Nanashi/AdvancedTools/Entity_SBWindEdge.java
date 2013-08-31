@@ -228,8 +228,7 @@ public class Entity_SBWindEdge extends Entity
 
 						 Entity var34 = var4.entityHit;
 						 var34.attackEntityFrom(var36, 2);
-						 if(this.worldObj.isRemote)
-							 var34.setVelocity(this.motionX, var34.motionY * 1.414D, this.motionZ);
+						 var34.addVelocity(this.motionX, var34.motionY * 1.414D, this.motionZ);
 						 this.setEntityDead();
 					 }
 					 else

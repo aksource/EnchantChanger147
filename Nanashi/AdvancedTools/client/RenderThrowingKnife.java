@@ -7,16 +7,15 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import Nanashi.AdvancedTools.Entity_ThrowingKnife;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import Nanashi.AdvancedTools.Entity_ThrowingKnife;
 @SideOnly(Side.CLIENT)
 public class RenderThrowingKnife extends Render
 {
     public void renderArrow(Entity_ThrowingKnife var1, double var2, double var4, double var6, float var8, float var9)
     {
-        this.loadTexture("/textures/items/knife.png");
+        this.loadTexture("/Nanashi/AdvancedTools/textures/items/knife.png");
         GL11.glPushMatrix();
         GL11.glTranslatef((float)var2, (float)var4, (float)var6);
         GL11.glRotatef(var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var9 - 90.0F, 0.0F, 1.0F, 0.0F);

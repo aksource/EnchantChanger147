@@ -38,8 +38,7 @@ public class Entity_PGPowerBomb extends Entity
 					DamageSource var4 = DamageSource.causePlayerDamage(this.PB_Master);
 					var3.attackEntityFrom(var4, 0);
 				}
-				else
-					var3.setVelocity(var3.motionX, 1.35D * (double)this.expower, var3.motionZ);
+				var3.addVelocity(var3.motionX, 1.35D * (double)this.expower, var3.motionZ);
 			}
 		}
 		for (var2 = 0; var2 < 200; ++var2)
