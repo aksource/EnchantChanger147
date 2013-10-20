@@ -24,7 +24,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="AdvancedTools", name="AdvancedTools", version="2.0n-Unofficial")
+@Mod(modid="AdvancedTools", name="AdvancedTools", version="2.0p-Unofficial")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels="AT|Tool", packetHandler=PacketHandler.class)
 
 public class AdvancedTools
@@ -98,8 +98,9 @@ public class AdvancedTools
 		this.itemSetup();
 		this.addRecipe();
 		this.setItemIcon();
-		this.setName();
 		this.entitySetup();
+		this.setName();
+
 		proxy.registerRenderInformation();
 	}
 
@@ -127,7 +128,12 @@ public class AdvancedTools
 		{
 			for(int i = 0; i <BiomeGenBase.biomeList.length;i++)
 			{
-				if(BiomeGenBase.biomeList[i] != null && BiomeGenBase.biomeList[i] != BiomeGenBase.hell && BiomeGenBase.biomeList[i] != BiomeGenBase.mushroomIsland && BiomeGenBase.biomeList[i] != BiomeGenBase.mushroomIslandShore && BiomeGenBase.biomeList[i] != BiomeGenBase.sky)
+				if(BiomeGenBase.biomeList[i] != null
+						&& BiomeGenBase.biomeList[i] != BiomeGenBase.hell
+						&& BiomeGenBase.biomeList[i] != BiomeGenBase.mushroomIsland
+						&& BiomeGenBase.biomeList[i] != BiomeGenBase.mushroomIslandShore
+						&& BiomeGenBase.biomeList[i] != BiomeGenBase.sky
+						&& BiomeGenBase.biomeList[i].getSpawnableList(EnumCreatureType.monster).size() >= 5)
 				{
 					EntityRegistry.addSpawn(Entity_HighSkeleton.class, 2, 1, 4, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
 					EntityRegistry.addSpawn(Entity_SkeletonSniper.class, 3, 1, 4, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
@@ -300,6 +306,14 @@ public class AdvancedTools
 		LanguageRegistry.addName(DevilSword, "Devil Sword");
 		LanguageRegistry.addName(GenocideBlade, "Genocide Blade");
 //		LanguageRegistry.addName(ExtraSpawner, "Extra Mob Spawner");
+		
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.HighSkeleton.name", "HighSkeleton");
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.SkeletonSniper.name", "SkeletonSniper");
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.ZombieWarrior.name", "ZombieWarrior");
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.FireZombie.name", "FireZombie");
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.HighSpeedCreeper.name", "HighSpeedCreeper");
+		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.GoldCreeper.name", "GoldCreeper");
+		
 	}
 	public static MovingObjectPosition setMousePoint(World world, EntityPlayer entityplayer)
     {
