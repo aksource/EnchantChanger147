@@ -1,11 +1,9 @@
-package net.minecraft.src;
+package MergeEnchantment;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemEnchantedBook;
@@ -13,7 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-public class AddEnchantmentRecipes implements IRecipe {
+public class AddEnchantmentRecipes implements IRecipe
+{
 
 	private ItemStack output =null;
 
@@ -29,9 +28,10 @@ public class AddEnchantmentRecipes implements IRecipe {
 		Enchantment ench1;
 		int EnchInt2;
 		Enchantment ench2;
+		ItemStack craftitem;
 		for(int i=0; i< inv.getSizeInventory();i++)
 		{
-			ItemStack craftitem = inv.getStackInSlot(i);
+			craftitem = inv.getStackInSlot(i);
 			if(craftitem !=null)
 			{
 				if(craftitem.getItem().isRepairable())
@@ -46,14 +46,14 @@ public class AddEnchantmentRecipes implements IRecipe {
 				}
 				else
 				{
-					continue;
+					return false;
 				}
 			}
 			else continue;
 		}
 		if(toolflag > 0 && toolflag < 2 && bookflag > 0 && bookflag < 2)
 		{
-			System.out.println(tool);
+//			System.out.println(tool);
 			Map toolenchlist = EnchantmentHelper.getEnchantments(tool);
 			Map bookenchlist = EnchantmentHelper.getEnchantments(book);
 			Iterator var1 = bookenchlist.keySet().iterator();
@@ -61,11 +61,11 @@ public class AddEnchantmentRecipes implements IRecipe {
 			while (var1.hasNext())
 			{
 				EnchInt1 = ((Integer)var1.next()).intValue();
-				System.out.println(EnchInt1);
+//				System.out.println(EnchInt1);
 				ench1 = Enchantment.enchantmentsList[EnchInt1];
 				int var3 = toolenchlist.containsKey(Integer.valueOf(EnchInt1)) ? ((Integer)toolenchlist.get(Integer.valueOf(EnchInt1))).intValue() : 0;
 				int var4 = ((Integer)bookenchlist.get(Integer.valueOf(EnchInt1))).intValue();
-				System.out.println(var4);
+//				System.out.println(var4);
 				int Max;
 				if (var3 == var4)
 				{
@@ -78,13 +78,13 @@ public class AddEnchantmentRecipes implements IRecipe {
 
 				var4 = Max;
 				flag =  ench1.canApplyAtEnchantingTable(tool);
-				System.out.println(flag);
+//				System.out.println(flag);
 				while (var2.hasNext())
 				{
 					EnchInt2 = ((Integer)var2.next()).intValue();
 					ench2 = Enchantment.enchantmentsList[EnchInt2];
 					flag = ench1.canApplyTogether(ench2);
-					System.out.println(flag);
+//					System.out.println(flag);
 				}
 				toolenchlist.put(Integer.valueOf(EnchInt1), Integer.valueOf(var4));
 			}
@@ -111,7 +111,6 @@ public class AddEnchantmentRecipes implements IRecipe {
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		// TODO 自動生成されたメソッド・スタブ
 		return this.output;
 	}
 }
