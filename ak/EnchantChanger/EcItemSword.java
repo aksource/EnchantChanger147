@@ -102,7 +102,7 @@ public class EcItemSword extends ItemSword implements IItemRenderer
 			CModel.renderItem(item, (EntityLiving) data[1]);
 		else if(item.getItem() instanceof EcItemCloudSwordCore)
 			CCModel.renderItem(item, (EntityLiving) data[1], ((EcItemCloudSwordCore)item.getItem()).ActiveMode);
-		else if(item.getItem() instanceof EcItemSephirothSword)
+		else if(item.getItem() instanceof EcItemSephirothSword || item.getItem() instanceof EcItemSephirothSwordImit)
 			SModel.renderItem(item, (EntityLiving) data[1]);
 		else if(item.getItem() instanceof EcItemUltimateWeapon)
 			UModel.renderItem(item, (EntityLiving) data[1]);

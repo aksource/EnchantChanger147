@@ -1,13 +1,15 @@
 package ak.EnchantChanger.Client;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.lwjgl.input.Keyboard;
+
 import ak.EnchantChanger.CommonProxy;
 import ak.EnchantChanger.CommonTickHandler;
+import ak.EnchantChanger.EcEntityApOrb;
 import ak.EnchantChanger.EcEntityExExpBottle;
 import ak.EnchantChanger.EcEntityMeteo;
 import ak.EnchantChanger.EcTileEntityHugeMateria;
@@ -46,7 +48,8 @@ public class ClientProxy extends CommonProxy
 		MinecraftForgeClient.preloadTexture("/ak/EnchantChanger/mod_EnchantChanger/gui/materializer.png");
 		RenderingRegistry.registerEntityRenderingHandler(EcEntityExExpBottle.class, new EcRenderItemThrowable(EnchantChanger.ItemExExpBottle.getIconFromDamage(0),0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EcEntityMeteo.class, new EcRenderItemThrowable(22,EnchantChanger.MeteoSize));
-//		TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
+		RenderingRegistry.registerEntityRenderingHandler(EcEntityApOrb.class, new EcRenderApOrb());
+		//		TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
 		TickRegistry.registerTickHandler(new CommonTickHandler(), Side.SERVER);
 		KeyBindingRegistry.registerKeyBinding(new EcKeyHandler(new KeyBinding[]{MagicKey},new boolean[]{false}));
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.SephirothSwordItemID, (IItemRenderer) EnchantChanger.ItemSephirothSword);
@@ -54,6 +57,7 @@ public class ClientProxy extends CommonProxy
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.FirstSwordItemID, (IItemRenderer) EnchantChanger.ItemCloudSwordCore);
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.CloudSwordItemID, (IItemRenderer) EnchantChanger.ItemCloudSword);
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.UltimateWeaponItemID, (IItemRenderer) EnchantChanger.ItemUltimateWeapon);
+		MinecraftForgeClient.registerItemRenderer(EnchantChanger.ImitateSephSwordID, (IItemRenderer)EnchantChanger.ItemImitateSephirothSword);
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.MateriaID, (IItemRenderer) EnchantChanger.ItemMat);
 		MinecraftForgeClient.registerItemRenderer(EnchantChanger.MasterMateriaID, (IItemRenderer) EnchantChanger.MasterMateria);
 	}

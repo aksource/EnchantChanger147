@@ -53,7 +53,7 @@ fmlversion.properties
 forge_logo.png
 mcp.png
 Start.java
-*.info
+/*.info
 *.cfg
 
 
