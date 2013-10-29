@@ -33,7 +33,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.6l-universal")
+@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.6m-universal")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"EC|Levi","EC|CSC","EC|CS","EC|Sw"}, packetHandler=Packet_EnchantChanger.class)
 public class EnchantChanger //extends BaseMod
 {
@@ -108,6 +108,9 @@ public class EnchantChanger //extends BaseMod
 	public static String EcHugetex ="/ak/EnchantChanger/mod_EnchantChanger/item/hugemateriatex.png";
 	public static double AbsorpBoxSize = 5D;
 	public int MaxLv = 127;
+	public static boolean enableAPSystem;
+	public static boolean enableDungeonLoot;
+	public static int aPBasePoint;
 
 	public static boolean incompatible = false;
 	public static boolean loadMTH = false;
@@ -144,6 +147,9 @@ public class EnchantChanger //extends BaseMod
 		ImitateSephSwordID = config.get(Configuration.CATEGORY_ITEM, "Imitate Masamune Blade Id", 5009).getInt();
 		LevelCap = config.get(Configuration.CATEGORY_GENERAL, "LevelCap", false,"TRUE:You cannot change a Materia to a enchantment over max level of the enchantment.").getBoolean(false);
 		Debug = config.get(Configuration.CATEGORY_GENERAL, "Debug mode", false, "For Debugger").getBoolean(false);
+		enableAPSystem = config.get(Configuration.CATEGORY_GENERAL, "enableAPSystem", true).getBoolean(true);
+		enableDungeonLoot = config.get(Configuration.CATEGORY_GENERAL, "enableDungeonLoot", true).getBoolean(true);
+		aPBasePoint = config.get(Configuration.CATEGORY_GENERAL, "APBAsePoint", 200).getInt();
 		SwordIds = config.get(Configuration.CATEGORY_GENERAL, "Extra SwordIds", "267","Put Ids which you want to operate as  swords. Usage: 1,2,3").value;
 		ToolIds = config.get(Configuration.CATEGORY_GENERAL, "Extra ToolIds", "257","Put Ids which you want to operate as  swords. Usage: 1,2,3").value;
 		BowIds = config.get(Configuration.CATEGORY_GENERAL, "Extra BowIds", "261","Put Ids which you want to operate as  bows. Usage: 1,2,3").value;
