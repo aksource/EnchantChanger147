@@ -243,7 +243,8 @@ public class EnchantChanger //extends BaseMod
 		StringtoInt(ArmorIds,ArmorIdArray);
 
 
-		GameRegistry.addRecipe(new EcMateriaRecipe());
+		if(this.Difficulty < 2)
+			GameRegistry.addRecipe(new EcMateriaRecipe());
 		GameRegistry.addRecipe(new EcMasterMateriaRecipe());
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemMat,1, 0), new Object[]{new ItemStack(Item.diamond, 1), new ItemStack(Item.enderPearl, 1)});
 		GameRegistry.addRecipe(new ItemStack(ItemZackSword, 1), new Object[]{" X","XX"," Y", Character.valueOf('X'),Block.blockSteel, Character.valueOf('Y'),Item.ingotIron});
@@ -261,7 +262,8 @@ public class EnchantChanger //extends BaseMod
 			GameRegistry.addRecipe(new ItemStack(Item.expBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.potion, 1, 0), Character.valueOf('Y'), new ItemStack(Item.diamond, 1)});
 		GameRegistry.addRecipe(new ItemStack(ItemExExpBottle, 8), new Object[]{"XXX","XYX","XXX", Character.valueOf('X'),new ItemStack(Item.expBottle, 1, 0), Character.valueOf('Y'), new ItemStack(Block.blockDiamond, 1)});
 		GameRegistry.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
-		this.DungeonLootItemResist();
+		if(this.enableDungeonLoot)
+			this.DungeonLootItemResist();
 		if(this.Debug)
 			DebugSystem();
 	}
@@ -270,7 +272,6 @@ public class EnchantChanger //extends BaseMod
 	{
 		this.loadMTH = Loader.isModLoaded("MultiToolHolders");
 		this.AddLocalization();
-		DungeonLootItemResist();
 		this.incompatible = this.checkCompatibility();
 	}
 	public void AddLocalization()
