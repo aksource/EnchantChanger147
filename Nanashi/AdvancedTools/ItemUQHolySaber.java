@@ -22,16 +22,7 @@ public class ItemUQHolySaber extends ItemUniqueArms
 	{
 		super(var1, var2, var3);
 	}
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public void func_94581_a(IconRegister par1IconRegister)
-//	{
-//		this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "HolySaber");
-//	}
-	/**
-	 * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-	 * update it's contents.
-	 */
+
 	public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5)
 	{
 		super.onUpdate(var1, var2, var3, var4, var5);
@@ -47,19 +38,12 @@ public class ItemUQHolySaber extends ItemUniqueArms
 		}
 	}
 
-	/**
-	 * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-	 * the damage on the stack.
-	 */
 	public boolean hitEntity(ItemStack var1, EntityLiving var2, EntityLiving var3)
 	{
 		var1.damageItem(1, var3);
 		return true;
 	}
 
-	/**
-	 * Returns the damage against a given entity.
-	 */
 	public int getDamageVsEntity(Entity var1)
 	{
 		byte var2 = 0;

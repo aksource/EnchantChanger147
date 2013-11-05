@@ -70,9 +70,7 @@ public class AdvancedTools
 	public static Item InfiniteShovel;
 	public static Item InfiniteHoe;
 	public static Item GenocideBlade;
-//	public static Item ExtraSpawner;
 
-//	public static String textureDomain = "Nanashi/AdvancedTools:";
 	public static String itemTexture = "/Nanashi/AdvancedTools/textures/items.png";
 	public static String mobTexture = "/Nanashi/AdvancedTools/textures/mob/";
 
@@ -106,13 +104,6 @@ public class AdvancedTools
 
 	public void entitySetup()
 	{
-//		EntityRegistry.registerGlobalEntityID(Entity_HighSkeleton.class, "HighSkeleton", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-//		EntityRegistry.registerGlobalEntityID(Entity_SkeletonSniper.class, "SkeletonSniper", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-//		EntityRegistry.registerGlobalEntityID(Entity_ZombieWarrior.class, "ZombieWarrior", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-//		EntityRegistry.registerGlobalEntityID(Entity_FireZombie.class, "FireZombie", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-//		EntityRegistry.registerGlobalEntityID(Entity_HighSpeedCreeper.class, "HighSpeedCreeper", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-//		EntityRegistry.registerGlobalEntityID(Entity_GoldCreeper.class, "GoldCreeper", EntityRegistry.findGlobalUniqueEntityId(), 0, 0);
-
 		EntityRegistry.registerModEntity(Entity_ThrowingKnife.class, "ThrowingKnife", 0, this, 250, 20, true);
 		EntityRegistry.registerModEntity(Entity_HighSkeleton.class, "HighSkeleton", 1, this, 250, 1, true);
 		EntityRegistry.registerModEntity(Entity_SkeletonSniper.class, "SkeletonSniper", 2, this, 250, 1, true);
@@ -141,12 +132,6 @@ public class AdvancedTools
 					EntityRegistry.addSpawn(Entity_FireZombie.class, 3, 1, 4, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
 					EntityRegistry.addSpawn(Entity_HighSpeedCreeper.class, 3, 4, 4, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
 					EntityRegistry.addSpawn(Entity_GoldCreeper.class, 1, 1, 4, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
-
-//					EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
-//					EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
-//					EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
-//					EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
-//					EntityRegistry.removeSpawn(EntityEnderman.class, EnumCreatureType.monster, BiomeGenBase.biomeList[i]);
 				}
 			}
 
@@ -192,7 +177,6 @@ public class AdvancedTools
 		InfiniteShovel = (new ItemUGShovel(ItemID_INDEX + 33, EnumToolMaterial.GOLD)).setItemName("InfinityShovel").setMaxDamage(0).setCreativeTab(tabsAT);
 		InfiniteHoe = (new ItemInfHoe(ItemID_INDEX + 34, EnumToolMaterial.GOLD)).setItemName("InfinityHoe").setMaxDamage(0).setCreativeTab(tabsAT);
 		GenocideBlade = (new ItemUniqueArms(ItemID_INDEX + 36, EnumToolMaterial.EMERALD, 10000)).setItemName("GenocideBlade").setMaxDamage(0).setCreativeTab(tabsAT);
-//		ExtraSpawner = (new ItemExtraMobSpawner(ItemID_INDEX + 37)).setItemName("Extra Spawner").setCreativeTab(tabsAT);
 	}
 
 	public void addRecipe()
@@ -305,7 +289,6 @@ public class AdvancedTools
 		LanguageRegistry.addName(PoisonKnife, "Poison Knife");
 		LanguageRegistry.addName(DevilSword, "Devil Sword");
 		LanguageRegistry.addName(GenocideBlade, "Genocide Blade");
-//		LanguageRegistry.addName(ExtraSpawner, "Extra Mob Spawner");
 		
 		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.HighSkeleton.name", "HighSkeleton");
 		LanguageRegistry.instance().addStringLocalization("entity.AdvancedTools.SkeletonSniper.name", "SkeletonSniper");

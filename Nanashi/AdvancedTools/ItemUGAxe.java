@@ -18,45 +18,13 @@ public class ItemUGAxe extends ItemUGTool
 	{
 		super(var1, 3, var2, blocksEffectiveAgainst, var3);
 		this.material = var2;
-//		this.setTextureFile(AdvancedTools.itemTexture);
 	}
 
 	protected ItemUGAxe(int var1, EnumToolMaterial var2)
 	{
 		super(var1, 3, var2, blocksEffectiveAgainst, 1.0F);
 	}
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public void func_94581_a(IconRegister par1IconRegister)
-//	{
-//		if(this.getUnlocalizedName().equals("item.UpgradedWoodenAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGWoodaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedStoneAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGStoneaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedIronAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGIronaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedGoldenAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGGoldaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedDiamondAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGDiamondaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.InfinityAxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "Infinityaxe");
-//		}
-//	}
-	/**
-	 * Returns if the item (tool) can harvest results from the block type.
-	 */
+	@Override
 	public boolean canHarvestBlock(Block var1)
 	{
 		return var1.blockMaterial == Material.wood;

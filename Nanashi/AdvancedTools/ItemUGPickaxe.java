@@ -12,45 +12,14 @@ public class ItemUGPickaxe extends ItemUGTool
 	{
 		super(var1, 2, var2, blocksEffectiveAgainst, var3);
 		this.toolMaterial = var2;
-//		this.setTextureFile(AdvancedTools.itemTexture);
 	}
 
 	protected ItemUGPickaxe(int var1, EnumToolMaterial var2)
 	{
 		super(var1, 2, var2, blocksEffectiveAgainst, 1.0F);
 	}
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public void func_94581_a(IconRegister par1IconRegister)
-//	{
-//		if(this.getUnlocalizedName().equals("item.UpgradedWoodenPickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGWoodpickaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedStonePickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGStonepickaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedIronPickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGIronpickaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedGoldenPickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGGoldpickaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.UpgradedDiamondPickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "UGDiamondpickaxe");
-//		}
-//		else if(this.getUnlocalizedName().equals("item.InfinityPickaxe"))
-//		{
-//	    	this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "Infinitypickaxe");
-//		}
-//	}
-	/**
-	 * Returns if the item (tool) can harvest results from the block type.
-	 */
+
+	@Override
 	public boolean canHarvestBlock(Block var1)
 	{
 //		return var1 == Block.obsidian ? this.toolMaterial.getHarvestLevel() == 3 : (var1 != Block.blockDiamond && var1 != Block.oreDiamond ? (var1 != Block.oreEmerald && var1 != Block.blockEmerald ? (var1 != Block.blockGold && var1 != Block.oreGold ? (var1 != Block.blockSteel && var1 != Block.oreIron ? (var1 != Block.blockLapis && var1 != Block.oreLapis ? (var1 != Block.oreRedstone && var1 != Block.oreRedstoneGlowing ? (var1.blockMaterial == Material.rock ? true : (var1.blockMaterial == Material.iron ? true : var1.blockMaterial == Material.anvil)) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 1) : this.toolMaterial.getHarvestLevel() >= 1) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 2) : this.toolMaterial.getHarvestLevel() >= 2);

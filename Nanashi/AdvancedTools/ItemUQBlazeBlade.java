@@ -8,6 +8,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemUQBlazeBlade extends ItemUniqueArms
 {
@@ -24,16 +26,7 @@ public class ItemUQBlazeBlade extends ItemUniqueArms
 		super(var1, var2);
 		this.weaponStrength = var3;
 	}
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public void func_94581_a(IconRegister par1IconRegister)
-//	{
-//		this.iconIndex = par1IconRegister.func_94245_a(AdvancedTools.textureDomain + "BlazeBlade");
-//	}
-	/**
-	 * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-	 * update it's contents.
-	 */
+
 	public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5)
 	{
 		super.onUpdate(var1, var2, var3, var4, var5);
@@ -44,9 +37,6 @@ public class ItemUQBlazeBlade extends ItemUniqueArms
 		}
 	}
 
-	/**
-	 * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-	 */
 	public void onPlayerStoppedUsing(ItemStack var1, World var2, EntityPlayer var3, int var4)
 	{
 		int var5 = var3.getFoodStats().getFoodLevel();
@@ -111,25 +101,16 @@ public class ItemUQBlazeBlade extends ItemUniqueArms
 		}
 	}
 
-	/**
-	 * returns the action that specifies what animation to play when the items is being used
-	 */
 	public EnumAction getItemUseAction(ItemStack var1)
 	{
 		return EnumAction.bow;
 	}
-
-	/**
-	 * allows items to add custom lines of information to the mouseover description
-	 */
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
 		par3List.add("Ability : Fire Ball");
 	}
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-	 */
 	public ItemStack onItemRightClick(ItemStack var1, World var2, EntityPlayer var3)
 	{
 		int var4 = var3.getFoodStats().getFoodLevel();
@@ -142,9 +123,6 @@ public class ItemUQBlazeBlade extends ItemUniqueArms
 		return var1;
 	}
 
-	/**
-	 * Returns the damage against a given entity.
-	 */
 	public int getDamageVsEntity(Entity var1)
 	{
 		var1.setFire(4);

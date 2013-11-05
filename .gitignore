@@ -44,6 +44,7 @@ local.properties
 /net/minecraft/world
 /net/minecraft/src/*.java
 /net/minecraft/storagebox
+/StorageBox
 !mod_psWater.java
 !mod_MergeEnchantment.java
 !mod_CraftWitherSkull.java
