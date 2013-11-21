@@ -1,6 +1,5 @@
 package ak.EnchantChanger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -16,7 +15,6 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -33,7 +31,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.6m-universal")
+@Mod(modid="EnchantChanger", name="EnchantChanger", version="1.6n-universal")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"EC|Levi","EC|CSC","EC|CS","EC|Sw"}, packetHandler=Packet_EnchantChanger.class)
 public class EnchantChanger //extends BaseMod
 {
@@ -68,14 +66,10 @@ public class EnchantChanger //extends BaseMod
 	public static boolean Debug;
 	public static float MeteoPower;
 	public static float MeteoSize;
-	public static String SwordIds = "";
-	public static ArrayList<Integer> SwordIdArray = new ArrayList<Integer>();
-	public static String ToolIds = "";
-	public static ArrayList<Integer> ToolIdArray = new ArrayList<Integer>();
-	public static String BowIds = "";
-	public static ArrayList<Integer> BowIdArray = new ArrayList<Integer>();
-	public static String ArmorIds = "";
-	public static ArrayList<Integer> ArmorIdArray = new ArrayList<Integer>();
+	public static int[] extraSwordIDs;
+	public static int[] extraToolIDs;
+	public static int[] extraBowIDs;
+	public static int[] extraArmorIDs;
 
 	public static boolean DecMateriaLv;
 	public static boolean YouAreTera;
@@ -112,7 +106,6 @@ public class EnchantChanger //extends BaseMod
 	public static boolean enableDungeonLoot;
 	public static int aPBasePoint;
 
-	public static boolean incompatible = false;
 	public static boolean loadMTH = false;
 	@Instance("EnchantChanger")
 	public static EnchantChanger instance;
@@ -150,31 +143,19 @@ public class EnchantChanger //extends BaseMod
 		enableAPSystem = config.get(Configuration.CATEGORY_GENERAL, "enableAPSystem", true).getBoolean(true);
 		enableDungeonLoot = config.get(Configuration.CATEGORY_GENERAL, "enableDungeonLoot", true).getBoolean(true);
 		aPBasePoint = config.get(Configuration.CATEGORY_GENERAL, "APBAsePoint", 200).getInt();
-		SwordIds = config.get(Configuration.CATEGORY_GENERAL, "Extra SwordIds", "267","Put Ids which you want to operate as  swords. Usage: 1,2,3").value;
-		ToolIds = config.get(Configuration.CATEGORY_GENERAL, "Extra ToolIds", "257","Put Ids which you want to operate as  swords. Usage: 1,2,3").value;
-		BowIds = config.get(Configuration.CATEGORY_GENERAL, "Extra BowIds", "261","Put Ids which you want to operate as  bows. Usage: 1,2,3").value;
-		Property ArmorIdsProp = config.get(Configuration.CATEGORY_GENERAL, "Extra ArmorIds", "298");
-		ArmorIdsProp.comment="Put Ids which you want to operate as  armors. Usage: 1,2,3";
-		ArmorIds = ArmorIdsProp.value;
-		Property DecMateriaLvProp = config.get(Configuration.CATEGORY_GENERAL, "DecMateriaLv", false);
-		DecMateriaLvProp.comment= "TRUE:The level of extracted Materia is decreased by the item damage";
-		DecMateriaLv = DecMateriaLvProp.getBoolean(false);
-		Property YouAreTeraProp = config.get(Configuration.CATEGORY_GENERAL, "YouAreTera", false);
-		YouAreTeraProp.comment="TRUE:You become Tera in FF4. It means that you can use Magic Materia when your MP is exhausted";
-		YouAreTera = YouAreTeraProp.getBoolean(false);
-		Property MeteoPowerProp =config.get(Configuration.CATEGORY_GENERAL, "METEO POWER", 10);
-		MeteoPowerProp.comment="This is a power of Meteo";
-		MeteoPower = (float)MeteoPowerProp.getInt();
-		Property MeteoSizeProp =config.get(Configuration.CATEGORY_GENERAL, "Meteo Size", 10);
-		MeteoSizeProp.comment="This is a Size of Meteo";
-		MeteoSize = (float)MeteoSizeProp.getInt();
-		Property MateriaPotionMinutesProp = config.get(Configuration.CATEGORY_GENERAL, "Materia Potion Minutes", 10);
-		MateriaPotionMinutesProp.comment = "How long minutes Materia put potion effect to MOB or ANIMAL";
-		MateriaPotionMinutes = MateriaPotionMinutesProp.getInt();
+		
+		extraSwordIDs = config.get(Configuration.CATEGORY_GENERAL, "Extra SwordIds", new int[]{267}, "Put Ids which you want to operate as  swords.").getIntList();
+		extraToolIDs = config.get(Configuration.CATEGORY_GENERAL, "Extra ToolIds", new int[]{257}, "Put Ids which you want to operate as  tools.").getIntList();
+		extraBowIDs = config.get(Configuration.CATEGORY_GENERAL, "Extra BowIds", new int[]{261}, "Put Ids which you want to operate as  bows.").getIntList();
+		extraArmorIDs = config.get(Configuration.CATEGORY_GENERAL, "Extra ArmorIds", new int[]{298}, "Put Ids which you want to operate as  armors.").getIntList();
 
-		Property DifficultyProp = config.get(Configuration.CATEGORY_GENERAL, "Difficulty", 1);
-		DifficultyProp.comment="Difficulty of this MOD. 0 = Easy, 1 = Normal, 2 = Hard";
-		Difficulty = DifficultyProp.getInt();
+		DecMateriaLv = config.get(Configuration.CATEGORY_GENERAL, "DecMateriaLv", false, "TRUE:The level of extracted Materia is decreased by the item damage").getBoolean(false);
+		YouAreTera = config.get(Configuration.CATEGORY_GENERAL, "YouAreTera", false, "TRUE:You become Tera in FF4. It means that you can use Magic Materia when your MP is exhausted").getBoolean(false);
+		MeteoPower = (float)config.get(Configuration.CATEGORY_GENERAL, "METEO POWER", 10, "This is a power of Meteo").getInt();
+		MeteoSize = (float)config.get(Configuration.CATEGORY_GENERAL, "Meteo Size", 10, "This is a Size of Meteo").getInt();
+		MateriaPotionMinutes = config.get(Configuration.CATEGORY_GENERAL, "Materia Potion Minutes", 10, "How long minutes Materia put potion effect to MOB or ANIMAL").getInt();
+
+		Difficulty = config.get(Configuration.CATEGORY_GENERAL, "Difficulty", 1, "Difficulty of this MOD. 0 = Easy, 1 = Normal, 2 = Hard").getInt();
 
 		EnchantmentMeteoId = config.get(Configuration.CATEGORY_GENERAL, "EnchantmentMeteoId", 240).getInt();
 		EndhantmentHolyId = config.get(Configuration.CATEGORY_GENERAL, "EndhantmentHolyId", 241).getInt();
@@ -237,12 +218,6 @@ public class EnchantChanger //extends BaseMod
 			MinecraftForge.setBlockHarvestLevel(block, "FF7", 0);
 		}
 
-		StringtoInt(SwordIds,SwordIdArray);
-		StringtoInt(ToolIds,ToolIdArray);
-		StringtoInt(BowIds,BowIdArray);
-		StringtoInt(ArmorIds,ArmorIdArray);
-
-
 		if(this.Difficulty < 2)
 			GameRegistry.addRecipe(new EcMateriaRecipe());
 		GameRegistry.addRecipe(new EcMasterMateriaRecipe());
@@ -264,15 +239,12 @@ public class EnchantChanger //extends BaseMod
 		GameRegistry.addRecipe(new ItemStack(Block.dragonEgg,1), new Object[]{"XXX","XYX","XXX",Character.valueOf('X'), Item.eyeOfEnder, Character.valueOf('Y'), new ItemStack(MasterMateria,1,-1)});
 		if(this.enableDungeonLoot)
 			this.DungeonLootItemResist();
-		if(this.Debug)
-			DebugSystem();
 	}
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		this.loadMTH = Loader.isModLoaded("MultiToolHolders");
 		this.AddLocalization();
-		this.incompatible = this.checkCompatibility();
 	}
 	public void AddLocalization()
 	{
@@ -424,58 +396,6 @@ public class EnchantChanger //extends BaseMod
 		}
 		return Lv;
 	}
-	public void StringtoInt(String ExtraIDs, ArrayList<Integer> IDList)
-	{
-		if(!ExtraIDs.isEmpty())
-		{
-			StringBuffer IDNum=new StringBuffer();
-			int shift=0;
-			for(int i=0; i < ExtraIDs.length(); i++)
-			{
-				if(ExtraIDs.charAt(i) == ',')
-				{
-					for(int j=shift; j < i;j++)
-					{
-						IDNum.append(ExtraIDs.charAt(j));
-					}
-					System.out.println(IDNum);
-					IDList.add(Integer.valueOf(IDNum.toString())-256);
-					shift = i+1;
-					IDNum = new StringBuffer();
-				}
-			}
-			for(int j=shift; j < ExtraIDs.length();j++)
-			{
-				IDNum.append(ExtraIDs.charAt(j));
-			}
-			System.out.println(IDNum);
-			IDList.add(Integer.valueOf(IDNum.toString()));
-		}
-		else
-		{
-			IDList.add(Integer.valueOf(0));
-		}
-	}
-	public void StringtoArray(String ExtraNames, ArrayList<String> NameList)
-	{
-		if(!ExtraNames.isEmpty())
-		{
-			int shift=0;
-			for(int i=0; i < ExtraNames.length(); i++)
-			{
-				if(ExtraNames.charAt(i) == ',')
-				{
-					NameList.add(ExtraNames.substring(shift,i));
-					shift = i+1;
-				}
-			}
-			NameList.add(ExtraNames.substring(shift));
-		}
-		else
-		{
-			NameList.add("");
-		}
-	}
 	public void DungeonLootItemResist()
 	{
 		WeightedRandomChestContent materiaInChest;
@@ -493,13 +413,5 @@ public class EnchantChanger //extends BaseMod
 			ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, materiaInChest);
 			ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, materiaInChest);
 		}
-	}
-	public void DebugSystem()
-	{
-
-	}
-	public boolean checkCompatibility()
-	{
-		return Loader.isModLoaded("GraviSuite") || Loader.isModLoaded("ic2ca");
 	}
 }
