@@ -83,35 +83,37 @@ public class Entity_IHFrozenMob extends Entity
 
 	public void onUpdate()
 	{
-		--this.FrozenRest;
+		if(!this.worldObj.isRemote){
+			--this.FrozenRest;
 
-		if (this.frozen == null){
-			this.setDead();
-		}else if (!this.frozen.isBurning() && (this.frozen.hurtTime == 0 || this.FrozenRest >= 190)){
-			if (this.frozen.getHealth() > 0 && !(this.frozen instanceof EntityEnderman)){
-				this.frozen.setPosition(this.posX, this.frozen.posY, this.posZ);
-				this.rotationYaw = this.frozen.rotationYaw;
-				this.frozen.onGround = false;
-				if (this.frozen instanceof EntityMob){
-					((EntityMob)this.frozen).attackTime = 20;
-					((EntityMob)this.frozen).setAttackTarget(this.frozen);
-					((EntityMob)this.frozen).setLastAttackingEntity(this.frozen);
-				}
+			if (this.frozen == null){
+				this.setDead();
+			}else if (!this.frozen.isBurning() && (this.frozen.hurtTime == 0 || this.FrozenRest >= 190)){
+				if (this.frozen.getHealth() > 0 && !(this.frozen instanceof EntityEnderman)){
+					this.frozen.setPosition(this.posX, this.frozen.posY, this.posZ);
+					this.rotationYaw = this.frozen.rotationYaw;
+					this.frozen.onGround = false;
+					if (this.frozen instanceof EntityMob){
+						((EntityMob)this.frozen).attackTime = 20;
+						((EntityMob)this.frozen).setAttackTarget(this.frozen);
+						((EntityMob)this.frozen).setLastAttackingEntity(this.frozen);
+					}
 
-				for (int var1 = 0; var1 < 2; ++var1){
-					double var2 = this.rand.nextDouble() * (double)this.width;
-					double var4 = this.rand.nextDouble() * Math.PI * 1.0D;
-					double var6 = this.posX + var2 * Math.sin(var4);
-					double var8 = this.posY + (double)this.height * this.rand.nextDouble();
-					double var10 = this.posZ + var2 * Math.cos(var4);
-					this.worldObj.spawnParticle("explode", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					for (int var1 = 0; var1 < 2; ++var1){
+						double var2 = this.rand.nextDouble() * (double)this.width;
+						double var4 = this.rand.nextDouble() * Math.PI * 1.0D;
+						double var6 = this.posX + var2 * Math.sin(var4);
+						double var8 = this.posY + (double)this.height * this.rand.nextDouble();
+						double var10 = this.posZ + var2 * Math.cos(var4);
+						this.worldObj.spawnParticle("explode", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					}
+				}else{
+					this.setDead();
 				}
 			}else{
 				this.setDead();
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.glass", 1.0F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 			}
-		}else{
-			this.setDead();
-			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.glass", 1.0F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 	}
 
@@ -127,7 +129,7 @@ public class Entity_IHFrozenMob extends Entity
 
 	 public float getBrightness(float var1)
 	 {
-		 return this.frozen == null ? 0.0F : 1.0f;
+		 return 1.0f;
 	 }
 
 	 public boolean canBeCollidedWith()
