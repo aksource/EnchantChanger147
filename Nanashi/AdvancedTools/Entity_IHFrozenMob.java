@@ -88,7 +88,7 @@ public class Entity_IHFrozenMob extends Entity
 
 			if (this.frozen == null){
 				this.setDead();
-			}else if (!this.frozen.isBurning() && (this.frozen.hurtTime == 0 || this.FrozenRest >= 190)){
+			}else if (!this.frozen.isBurning() && this.FrozenRest >0 && (this.frozen.hurtTime == 0 || this.FrozenRest >= 190)){
 				if (this.frozen.getHealth() > 0 && !(this.frozen instanceof EntityEnderman)){
 					this.frozen.setPosition(this.posX, this.frozen.posY, this.posZ);
 					this.rotationYaw = this.frozen.rotationYaw;
