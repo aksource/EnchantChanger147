@@ -1,0 +1,21 @@
+[
+{
+  "modid": "VisibleRayGenerator",
+  "name": "VisibleRayGenerator",
+  "description": "Add some visible ray energy generator to mc147",
+  "version": "Build 3",
+  "mcversion": "1.4.7",
+  "url": "http://forum.minecraftuser.jp/viewtopic.php?f=13&t=6672",
+  "updateUrl": "",
+  "authors": [
+    "takanasayo"
+  ],
+  "credits": "Updated to mc147 By A.K.",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"IC2",
+  "dependencies": ["mod_MinecraftForge"
+  ]
+}
+]
